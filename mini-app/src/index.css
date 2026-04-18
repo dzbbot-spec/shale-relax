@@ -40,8 +40,10 @@ input::placeholder, textarea::placeholder {
 
 .booking-input {
   width: 100%;
-  padding: 14px 16px;
-  border-radius: 14px;
+  min-width: 0;
+  height: 44px;
+  padding: 0 12px;
+  border-radius: 10px;
   border: 1.5px solid #e0e0e0;
   background-color: #ffffff;
   font-size: 15px;
@@ -49,11 +51,17 @@ input::placeholder, textarea::placeholder {
   color: #111111;
   transition: border-color 0.15s ease;
   box-sizing: border-box;
+  display: block;
 }
 
 .booking-input:focus {
   border-color: #111111;
   outline: none;
+}
+
+textarea.booking-input {
+  height: auto;
+  padding: 10px 12px;
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {

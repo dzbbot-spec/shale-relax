@@ -42,7 +42,7 @@ const ITEMS: { page: Page; label: string; Icon: () => React.ReactElement }[] = [
   { page: 'home',    label: 'Главная',    Icon: HomeIcon },
   { page: 'gallery', label: 'Галерея',    Icon: GalleryIcon },
   { page: 'chalet',  label: 'О домиках', Icon: InfoIcon },
-  { page: 'booking', label: 'Забронировать', Icon: BookIcon },
+  { page: 'booking', label: 'Заявка', Icon: BookIcon },
 ]
 
 export default function NavBar({ current, navigate }: Props) {

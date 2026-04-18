@@ -23,7 +23,11 @@ const labelStyle: React.CSSProperties = {
   letterSpacing: 1.5,
   textTransform: 'uppercase' as const,
   color: '#999999',
-  marginBottom: 8,
+  marginBottom: 6,
+}
+
+const onFocusScroll = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  setTimeout(() => e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300)
 }
 
 export default function Booking({ navigate }: Props) {
@@ -79,35 +83,34 @@ export default function Booking({ navigate }: Props) {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '40px 24px',
+        padding: '40px 16px',
         textAlign: 'center',
         backgroundColor: '#ffffff',
       }}>
         <div style={{
-          width: 64,
-          height: 64,
+          width: 56,
+          height: 56,
           borderRadius: 12,
           backgroundColor: '#111111',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          marginBottom: 24,
+          marginBottom: 20,
         }}>
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="20 6 9 17 4 12"/>
           </svg>
         </div>
-        <h2 style={{ margin: '0 0 12px', fontSize: 24, fontWeight: 300, color: '#111111' }}>
+        <h2 style={{ margin: '0 0 10px', fontSize: 20, fontWeight: 300, color: '#111111' }}>
           Заявка отправлена
         </h2>
-        <p style={{ margin: '0 0 32px', fontSize: 14, fontWeight: 300, color: '#666666', lineHeight: 1.6 }}>
-          Свяжемся с вами в ближайшее время
-          для подтверждения бронирования.
+        <p style={{ margin: '0 0 28px', fontSize: 13, fontWeight: 300, color: '#666666', lineHeight: 1.6 }}>
+          Свяжемся с вами в ближайшее время для подтверждения бронирования.
         </p>
         <button
           onClick={() => navigate('home')}
           style={{
-            padding: '14px 40px',
+            padding: '12px 36px',
             borderRadius: 12,
             backgroundColor: '#111111',
             color: '#ffffff',
@@ -124,81 +127,85 @@ export default function Booking({ navigate }: Props) {
   const today = new Date().toISOString().split('T')[0]
 
   return (
-    <div style={{ minHeight: '100dvh', backgroundColor: '#ffffff' }}>
-      <div style={{ padding: '20px 24px 8px' }}>
-        <h1 style={{ margin: 0, fontSize: 28, fontWeight: 300, color: '#111111', letterSpacing: '-0.5px' }}>
+    <div style={{ minHeight: '100dvh', backgroundColor: '#ffffff', paddingBottom: 'env(safe-area-inset-bottom, 16px)' }}>
+      <div style={{ padding: '16px 16px 8px' }}>
+        <h1 style={{ margin: 0, fontSize: 20, fontWeight: 300, color: '#111111', letterSpacing: '-0.3px' }}>
           Заявка
         </h1>
-        <p style={{ margin: '4px 0 0', fontSize: 13, fontWeight: 300, color: '#999999' }}>
+        <p style={{ margin: '2px 0 0', fontSize: 12, fontWeight: 300, color: '#999999' }}>
           Ответим в течение часа
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} style={{ padding: '20px 16px 32px' }}>
+      <form onSubmit={handleSubmit} style={{ padding: '12px 16px 32px' }}>
         {/* Имя */}
-        <div style={{ marginBottom: 20 }}>
+        <div style={{ marginBottom: 14 }}>
           <label style={labelStyle}>Имя</label>
           <input
             type="text"
             placeholder="Как вас зовут"
             value={form.name}
             onChange={set('name')}
+            onFocus={onFocusScroll}
             required
             className="booking-input"
           />
         </div>
 
-        {/* Даты */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 20 }}>
-          <div>
-            <label style={labelStyle}>Заезд</label>
-            <input
-              type="date"
-              value={form.check_in}
-              min={today}
-              onChange={set('check_in')}
-              required
-              className="booking-input"
-            />
-          </div>
-          <div>
-            <label style={labelStyle}>Выезд</label>
-            <input
-              type="date"
-              value={form.check_out}
-              min={form.check_in || today}
-              onChange={set('check_out')}
-              required
-              className="booking-input"
-            />
+        {/* Даты — стопкой */}
+        <div style={{ marginBottom: 14 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+            <div style={{ minWidth: 0 }}>
+              <label style={labelStyle}>Заезд</label>
+              <input
+                type="date"
+                value={form.check_in}
+                min={today}
+                onChange={set('check_in')}
+                onFocus={onFocusScroll}
+                required
+                className="booking-input"
+              />
+            </div>
+            <div style={{ minWidth: 0 }}>
+              <label style={labelStyle}>Выезд</label>
+              <input
+                type="date"
+                value={form.check_out}
+                min={form.check_in || today}
+                onChange={set('check_out')}
+                onFocus={onFocusScroll}
+                required
+                className="booking-input"
+              />
+            </div>
           </div>
         </div>
 
-        {/* Гости — счётчик */}
-        <div style={{ marginBottom: 20 }}>
+        {/* Гости */}
+        <div style={{ marginBottom: 14 }}>
           <label style={labelStyle}>Гостей</label>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <button
               type="button"
               onPointerDown={() => pressBtn('minus')}
               onClick={() => setForm(f => ({ ...f, guests: Math.max(1, f.guests - 1) }))}
               style={{
-                width: 44,
-                height: 44,
-                borderRadius: 12,
+                width: 36,
+                height: 36,
+                borderRadius: 10,
                 border: '1.5px solid #e0e0e0',
-                fontSize: 20,
+                fontSize: 18,
                 color: pressed === 'minus' ? '#ffffff' : '#111111',
                 backgroundColor: pressed === 'minus' ? '#111111' : '#ffffff',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 transition: 'background-color 0.1s, color 0.1s',
+                flexShrink: 0,
               }}
-            >
-              −
-            </button>
-            <span style={{ fontSize: 20, fontWeight: 400, minWidth: 24, textAlign: 'center', color: '#111111' }}>
+            >−</button>
+            <span style={{ fontSize: 18, fontWeight: 400, minWidth: 20, textAlign: 'center', color: '#111111' }}>
               {form.guests}
             </span>
             <button
@@ -206,60 +213,59 @@ export default function Booking({ navigate }: Props) {
               onPointerDown={() => pressBtn('plus')}
               onClick={() => setForm(f => ({ ...f, guests: Math.min(6, f.guests + 1) }))}
               style={{
-                width: 44,
-                height: 44,
-                borderRadius: 12,
+                width: 36,
+                height: 36,
+                borderRadius: 10,
                 border: '1.5px solid #e0e0e0',
-                fontSize: 20,
+                fontSize: 18,
                 color: pressed === 'plus' ? '#ffffff' : '#111111',
                 backgroundColor: pressed === 'plus' ? '#111111' : '#ffffff',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 transition: 'background-color 0.1s, color 0.1s',
+                flexShrink: 0,
               }}
-            >
-              +
-            </button>
-            <span style={{ fontSize: 13, color: '#999999', fontWeight: 300 }}>
-              из 6 максимум
-            </span>
+            >+</button>
+            <span style={{ fontSize: 12, color: '#999999', fontWeight: 300 }}>из 6 макс.</span>
           </div>
         </div>
 
         {/* Контакт */}
-        <div style={{ marginBottom: 20 }}>
+        <div style={{ marginBottom: 14 }}>
           <label style={labelStyle}>Контакт</label>
           <input
             type="text"
             placeholder="+7 900 000-00-00 или @username"
             value={form.contact}
             onChange={set('contact')}
+            onFocus={onFocusScroll}
             required
             className="booking-input"
           />
         </div>
 
         {/* Комментарий */}
-        <div style={{ marginBottom: 24 }}>
+        <div style={{ marginBottom: 20 }}>
           <label style={labelStyle}>Комментарий</label>
           <textarea
             placeholder="Пожелания или вопросы"
             value={form.comment}
             onChange={set('comment')}
+            onFocus={onFocusScroll}
             rows={3}
             className="booking-input"
-            style={{ resize: 'none' }}
+            style={{ resize: 'none', height: 'auto' }}
           />
         </div>
 
         {/* Итог */}
         {nights > 0 && (
           <div style={{
-            padding: '16px 20px',
+            padding: '12px 16px',
             borderRadius: 12,
             backgroundColor: '#f5f5f5',
-            marginBottom: 20,
+            marginBottom: 16,
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
@@ -267,7 +273,7 @@ export default function Booking({ navigate }: Props) {
             <span style={{ fontSize: 13, color: '#666666', fontWeight: 300 }}>
               {nights} {nights === 1 ? 'ночь' : nights < 5 ? 'ночи' : 'ночей'} × 15 000 ₽
             </span>
-            <span style={{ fontSize: 18, fontWeight: 500, color: '#111111' }}>
+            <span style={{ fontSize: 16, fontWeight: 500, color: '#111111' }}>
               {(nights * 15000).toLocaleString('ru')} ₽
             </span>
           </div>
@@ -275,12 +281,12 @@ export default function Booking({ navigate }: Props) {
 
         {status === 'error' && (
           <div style={{
-            padding: '12px 16px',
-            borderRadius: 12,
+            padding: '10px 14px',
+            borderRadius: 10,
             backgroundColor: '#fff0f0',
             color: '#cc0000',
-            fontSize: 13,
-            marginBottom: 16,
+            fontSize: 12,
+            marginBottom: 14,
           }}>
             Не удалось отправить. Напишите напрямую в @shalerelax
           </div>
@@ -291,7 +297,7 @@ export default function Booking({ navigate }: Props) {
           disabled={status === 'sending'}
           style={{
             width: '100%',
-            padding: '16px 0',
+            padding: '14px 0',
             borderRadius: 12,
             backgroundColor: status === 'sending' ? '#888888' : '#111111',
             color: '#ffffff',
