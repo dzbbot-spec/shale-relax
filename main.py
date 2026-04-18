@@ -26,16 +26,31 @@ async def health(request: web.Request) -> web.Response:
     return web.Response(text="ok")
 
 
+OWNER_CHAT_ID = "1914219730"
+ALLOWED_ORIGIN = "https://shale-relax.netlify.app"
+
+
+def _cors_headers(origin: str) -> dict:
+    allowed = ALLOWED_ORIGIN if origin == ALLOWED_ORIGIN else ALLOWED_ORIGIN
+    return {
+        "Access-Control-Allow-Origin": allowed,
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+    }
+
+
 async def booking_webhook(request: web.Request) -> web.Response:
     """Принимает заявки на бронирование из Mini App."""
+    origin = request.headers.get("Origin", "")
+    headers = _cors_headers(origin)
+
     try:
         data = await request.json()
     except Exception:
-        return web.json_response({"error": "invalid json"}, status=400)
+        return web.json_response({"error": "invalid json"}, status=400, headers=headers)
 
     settings = get_settings()
-    if not settings.owner_chat_id:
-        return web.json_response({"error": "owner not configured"}, status=500)
+    owner_id = settings.owner_chat_id or OWNER_CHAT_ID
 
     check_in = data.get("check_in", "—")
     check_out = data.get("check_out", "—")
@@ -56,7 +71,7 @@ async def booking_webhook(request: web.Request) -> web.Response:
     if _bot_instance:
         try:
             await _bot_instance.send_message(
-                chat_id=settings.owner_chat_id,
+                chat_id=owner_id,
                 text=text,
                 parse_mode="Markdown",
             )
@@ -64,19 +79,12 @@ async def booking_webhook(request: web.Request) -> web.Response:
             logger = setup_logger("bot", settings.log_level, settings.logs_path)
             logger.error("Ошибка отправки заявки владельцу: %s", exc)
 
-    headers = {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Headers": "Content-Type",
-    }
     return web.json_response({"status": "ok"}, headers=headers)
 
 
 async def booking_preflight(request: web.Request) -> web.Response:
-    headers = {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "POST, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type",
-    }
+    origin = request.headers.get("Origin", "")
+    headers = _cors_headers(origin)
     return web.Response(status=204, headers=headers)
 
 
