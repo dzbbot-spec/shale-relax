@@ -35,9 +35,14 @@ downloads/
 ready_to_post/
 фото/
 *.mp4
+
+# Фото игнорируются везде кроме mini-app/public/photos
 *.jpg
 *.jpeg
 *.png
+!mini-app/public/**/*.jpg
+!mini-app/public/**/*.jpeg
+!mini-app/public/**/*.png
 
 # Runtime
 bot.pid
