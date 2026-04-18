@@ -1,4 +1,4 @@
-const CDN = 'https://res.cloudinary.com/dfbhw1rfx/image/upload/shale-relax'
+const CDN = 'https://res.cloudinary.com/dfbhw1rfx/image/upload/q_auto,f_auto,w_800/shale-relax'
 
 export const OUTSIDE_PHOTOS = [
   `${CDN}/exterior/20250712_201908.jpg`,

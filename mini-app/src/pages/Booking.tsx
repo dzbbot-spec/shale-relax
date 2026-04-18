@@ -86,7 +86,7 @@ export default function Booking({ navigate }: Props) {
         <div style={{
           width: 64,
           height: 64,
-          borderRadius: 50,
+          borderRadius: 12,
           backgroundColor: '#111111',
           display: 'flex',
           alignItems: 'center',
@@ -108,7 +108,7 @@ export default function Booking({ navigate }: Props) {
           onClick={() => navigate('home')}
           style={{
             padding: '14px 40px',
-            borderRadius: 50,
+            borderRadius: 12,
             backgroundColor: '#111111',
             color: '#ffffff',
             fontSize: 14,
@@ -185,7 +185,7 @@ export default function Booking({ navigate }: Props) {
               style={{
                 width: 44,
                 height: 44,
-                borderRadius: 50,
+                borderRadius: 12,
                 border: '1.5px solid #e0e0e0',
                 fontSize: 20,
                 color: pressed === 'minus' ? '#ffffff' : '#111111',
@@ -208,7 +208,7 @@ export default function Booking({ navigate }: Props) {
               style={{
                 width: 44,
                 height: 44,
-                borderRadius: 50,
+                borderRadius: 12,
                 border: '1.5px solid #e0e0e0',
                 fontSize: 20,
                 color: pressed === 'plus' ? '#ffffff' : '#111111',
@@ -257,7 +257,7 @@ export default function Booking({ navigate }: Props) {
         {nights > 0 && (
           <div style={{
             padding: '16px 20px',
-            borderRadius: 16,
+            borderRadius: 12,
             backgroundColor: '#f5f5f5',
             marginBottom: 20,
             display: 'flex',
@@ -292,7 +292,7 @@ export default function Booking({ navigate }: Props) {
           style={{
             width: '100%',
             padding: '16px 0',
-            borderRadius: 50,
+            borderRadius: 12,
             backgroundColor: status === 'sending' ? '#888888' : '#111111',
             color: '#ffffff',
             fontSize: 15,

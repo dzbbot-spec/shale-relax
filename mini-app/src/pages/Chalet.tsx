@@ -47,7 +47,7 @@ export default function Chalet({ navigate }: Props) {
               key={f}
               style={{
                 padding: '14px 16px',
-                borderRadius: 16,
+                borderRadius: 12,
                 backgroundColor: '#f5f5f5',
                 fontSize: 13,
                 fontWeight: 400,
@@ -81,7 +81,7 @@ export default function Chalet({ navigate }: Props) {
               style={{
                 flex: '0 0 220px',
                 height: 160,
-                borderRadius: 14,
+                borderRadius: 12,
                 overflow: 'hidden',
                 backgroundColor: '#f0f0f0',
                 scrollSnapAlign: 'start',
@@ -100,7 +100,7 @@ export default function Chalet({ navigate }: Props) {
       </div>
 
       {/* Описание */}
-      <div style={{ margin: '8px 16px 20px', padding: '18px 20px', borderRadius: 16, backgroundColor: '#f5f5f5' }}>
+      <div style={{ margin: '8px 16px 20px', padding: '18px 20px', borderRadius: 12, backgroundColor: '#f5f5f5' }}>
         <p style={{ margin: 0, fontSize: 13, fontWeight: 300, color: '#444444', lineHeight: 1.7 }}>
           5 минут пешком до подъёмников Эльбруса и Чегета.
           Вид на двуглавую вершину из окна. Тихий конец посёлка.
@@ -115,7 +115,7 @@ export default function Chalet({ navigate }: Props) {
           style={{
             width: '100%',
             padding: '16px 0',
-            borderRadius: 50,
+            borderRadius: 12,
             backgroundColor: '#111111',
             color: '#ffffff',
             fontSize: 15,
