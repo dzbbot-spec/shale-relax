@@ -16,17 +16,6 @@ interface FormData {
 
 const API_URL = import.meta.env.VITE_API_URL || 'https://shale-relax-production.up.railway.app'
 
-const inputStyle: React.CSSProperties = {
-  width: '100%',
-  padding: '14px 16px',
-  borderRadius: 14,
-  border: '1.5px solid #e8e8e8',
-  backgroundColor: '#ffffff',
-  fontSize: 15,
-  fontWeight: 300,
-  color: '#111111',
-}
-
 const labelStyle: React.CSSProperties = {
   display: 'block',
   fontSize: 11,
@@ -149,7 +138,7 @@ export default function Booking({ navigate }: Props) {
             value={form.name}
             onChange={set('name')}
             required
-            style={inputStyle}
+            className="booking-input"
           />
         </div>
 
@@ -163,7 +152,7 @@ export default function Booking({ navigate }: Props) {
               min={today}
               onChange={set('check_in')}
               required
-              style={inputStyle}
+              className="booking-input"
             />
           </div>
           <div>
@@ -174,7 +163,7 @@ export default function Booking({ navigate }: Props) {
               min={form.check_in || today}
               onChange={set('check_out')}
               required
-              style={inputStyle}
+              className="booking-input"
             />
           </div>
         </div>
@@ -235,7 +224,7 @@ export default function Booking({ navigate }: Props) {
             value={form.contact}
             onChange={set('contact')}
             required
-            style={inputStyle}
+            className="booking-input"
           />
         </div>
 
@@ -247,7 +236,8 @@ export default function Booking({ navigate }: Props) {
             value={form.comment}
             onChange={set('comment')}
             rows={3}
-            style={{ ...inputStyle, resize: 'none' }}
+            className="booking-input"
+            style={{ resize: 'none' }}
           />
         </div>
 

@@ -31,6 +31,29 @@ button {
 input, textarea, select {
   font-family: inherit;
   outline: none;
+  cursor: text;
+}
+
+input::placeholder, textarea::placeholder {
+  color: #aaaaaa;
+}
+
+.booking-input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1.5px solid #e0e0e0;
+  background-color: #ffffff;
+  font-size: 15px;
+  font-weight: 300;
+  color: #111111;
+  transition: border-color 0.15s ease;
+  box-sizing: border-box;
+}
+
+.booking-input:focus {
+  border-color: #111111;
+  outline: none;
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {
