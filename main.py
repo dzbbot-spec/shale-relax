@@ -28,7 +28,7 @@ async def health(request: web.Request) -> web.Response:
 
 OWNER_CHAT_ID = "1914219730"
 ALLOWED_ORIGINS = {
-    "https://shale-relax.netlify.app",
+    "https://dzbbot-spec.github.io",
     "https://dzbbot-spec.github.io",
 }
 
