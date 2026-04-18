@@ -12,7 +12,7 @@ from aiogram.types import (
 )
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
-MINI_APP_URL = os.environ.get("MINI_APP_URL", "https://shale-relax.vercel.app")
+MINI_APP_URL = os.environ.get("MINI_APP_URL", "https://shale-relax.netlify.app")
 
 
 def main_menu() -> ReplyKeyboardMarkup:
