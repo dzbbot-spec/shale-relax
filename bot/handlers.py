@@ -70,6 +70,51 @@ FAQ: dict[str, str] = {
 }
 
 
+# ─── Команда /stats (только для владельца) ──────────────────────────────────
+
+@router.message(Command("stats"))
+async def cmd_stats(message: Message) -> None:
+    if str(message.from_user.id) != _settings.owner_chat_id:
+        await message.answer("⛔ Команда доступна только владельцу.")
+        return
+
+    bookings_file = Path("data/bookings.json")
+    photos_dir = Path("data/photos")
+    ready_dir = Path("ready_to_post")
+
+    # Заявки
+    bookings: list = []
+    if bookings_file.exists():
+        try:
+            bookings = json.loads(bookings_file.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            bookings = []
+
+    total = len(bookings)
+    last_date = bookings[-1].get("created_at", "—") if bookings else "—"
+
+    # Очередь фото
+    photos_count = 0
+    if photos_dir.exists():
+        photos_count = len(list(photos_dir.glob("*.jpg")) + list(photos_dir.glob("*.png")))
+
+    # Готовые видео
+    videos_count = 0
+    if ready_dir.exists():
+        videos_count = len(list(ready_dir.glob("*.mp4")))
+
+    text = (
+        "📊 <b>Статистика Шале Релакс</b>\n"
+        "─────────────────────────\n"
+        f"📋 Заявок всего:       <b>{total}</b>\n"
+        f"🕐 Последняя заявка:  <b>{last_date}</b>\n"
+        f"📸 Фото в очереди:    <b>{photos_count}</b>\n"
+        f"🎬 Видео готовых:      <b>{videos_count}</b>\n"
+        "─────────────────────────"
+    )
+    await message.answer(text, parse_mode="HTML")
+
+
 # ─── Команда /start ─────────────────────────────────────────────────────────
 
 @router.message(Command("start"))
