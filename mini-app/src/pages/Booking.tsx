@@ -40,6 +40,8 @@ const inputStyle: React.CSSProperties = {
   display: 'block',
   fontFamily: 'inherit',
   outline: 'none',
+  WebkitAppearance: 'none',
+  appearance: 'none',
 }
 
 const onFocusScroll = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -98,7 +100,7 @@ export default function Booking({ navigate }: Props) {
         <p style={{ margin: '0 0 28px', fontSize: 13, fontWeight: 300, color: '#666666', lineHeight: 1.6 }}>
           Свяжемся с вами в ближайшее время для подтверждения бронирования.
         </p>
-        <button onClick={() => navigate('home')} style={{ padding: '12px 36px', borderRadius: 12, backgroundColor: '#111111', color: '#ffffff', fontSize: 14, fontWeight: 500 }}>
+        <button onClick={() => navigate('home')} style={{ padding: '12px 36px', borderRadius: 12, backgroundColor: '#111111', color: '#ffffff', fontSize: 14, fontWeight: 500, border: 'none', cursor: 'pointer' }}>
           На главную
         </button>
       </div>
@@ -108,13 +110,13 @@ export default function Booking({ navigate }: Props) {
   const today = new Date().toISOString().split('T')[0]
 
   return (
-    <div style={{ minHeight: '100dvh', backgroundColor: '#ffffff', paddingBottom: 'calc(env(safe-area-inset-bottom, 16px) + 70px)' }}>
+    <div style={{ minHeight: '100dvh', backgroundColor: '#ffffff', paddingBottom: 'calc(env(safe-area-inset-bottom, 16px) + 70px)', overflowX: 'hidden' }}>
       <div style={{ padding: '16px 16px 8px' }}>
         <h1 style={{ margin: 0, fontSize: 20, fontWeight: 300, color: '#111111' }}>Заявка</h1>
         <p style={{ margin: '2px 0 0', fontSize: 12, fontWeight: 300, color: '#999999' }}>Ответим в течение часа</p>
       </div>
 
-      <form onSubmit={handleSubmit} style={{ padding: '12px 16px 16px' }}>
+      <form onSubmit={handleSubmit} style={{ padding: '12px 16px 16px', width: '100%', boxSizing: 'border-box' }}>
 
         <div style={{ marginBottom: 14 }}>
           <label style={labelStyle}>Имя</label>
@@ -122,23 +124,29 @@ export default function Booking({ navigate }: Props) {
         </div>
 
         <div style={{ marginBottom: 14 }}>
-          <label style={labelStyle}>Заезд</label>
-          <input type="date" value={form.check_in} min={today} onChange={set('check_in')} onFocus={onFocusScroll} required style={inputStyle} />
+          <label style={labelStyle}>Дата заезда</label>
+          <input type="text" placeholder="дд.мм.гггг" value={form.check_in}
+            onFocus={e => { (e.target as HTMLInputElement).type = 'date'; onFocusScroll(e) }}
+            onBlur={e => { if (!(e.target as HTMLInputElement).value) (e.target as HTMLInputElement).type = 'text' }}
+            onChange={set('check_in')} required style={inputStyle} />
         </div>
 
         <div style={{ marginBottom: 14 }}>
-          <label style={labelStyle}>Выезд</label>
-          <input type="date" value={form.check_out} min={form.check_in || today} onChange={set('check_out')} onFocus={onFocusScroll} required style={inputStyle} />
+          <label style={labelStyle}>Дата выезда</label>
+          <input type="text" placeholder="дд.мм.гггг" value={form.check_out}
+            onFocus={e => { (e.target as HTMLInputElement).type = 'date'; onFocusScroll(e) }}
+            onBlur={e => { if (!(e.target as HTMLInputElement).value) (e.target as HTMLInputElement).type = 'text' }}
+            onChange={set('check_out')} required style={inputStyle} />
         </div>
 
         <div style={{ marginBottom: 14 }}>
           <label style={labelStyle}>Гостей</label>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <button type="button" onPointerDown={() => pressBtn('minus')} onClick={() => setForm(f => ({ ...f, guests: Math.max(1, f.guests - 1) }))}
-              style={{ width: 36, height: 36, borderRadius: 10, border: '1.5px solid #e0e0e0', fontSize: 18, color: pressed === 'minus' ? '#ffffff' : '#111111', backgroundColor: pressed === 'minus' ? '#111111' : '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>−</button>
+              style={{ width: 36, height: 36, borderRadius: 10, border: '1.5px solid #e0e0e0', fontSize: 18, color: pressed === 'minus' ? '#ffffff' : '#111111', backgroundColor: pressed === 'minus' ? '#111111' : '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, cursor: 'pointer' }}>−</button>
             <span style={{ fontSize: 18, fontWeight: 400, minWidth: 20, textAlign: 'center', color: '#111111' }}>{form.guests}</span>
             <button type="button" onPointerDown={() => pressBtn('plus')} onClick={() => setForm(f => ({ ...f, guests: Math.min(6, f.guests + 1) }))}
-              style={{ width: 36, height: 36, borderRadius: 10, border: '1.5px solid #e0e0e0', fontSize: 18, color: pressed === 'plus' ? '#ffffff' : '#111111', backgroundColor: pressed === 'plus' ? '#111111' : '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>+</button>
+              style={{ width: 36, height: 36, borderRadius: 10, border: '1.5px solid #e0e0e0', fontSize: 18, color: pressed === 'plus' ? '#ffffff' : '#111111', backgroundColor: pressed === 'plus' ? '#111111' : '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, cursor: 'pointer' }}>+</button>
             <span style={{ fontSize: 12, color: '#999999', fontWeight: 300 }}>из 6 макс.</span>
           </div>
         </div>
@@ -168,7 +176,7 @@ export default function Booking({ navigate }: Props) {
         )}
 
         <button type="submit" disabled={status === 'sending'}
-          style={{ width: '100%', padding: '14px 0', borderRadius: 12, backgroundColor: status === 'sending' ? '#888888' : '#111111', color: '#ffffff', fontSize: 15, fontWeight: 500 }}>
+          style={{ width: '100%', padding: '14px 0', borderRadius: 12, backgroundColor: status === 'sending' ? '#888888' : '#111111', color: '#ffffff', fontSize: 15, fontWeight: 500, border: 'none', cursor: 'pointer' }}>
           {status === 'sending' ? 'Отправляем...' : 'Отправить заявку'}
         </button>
       </form>
