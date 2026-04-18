@@ -2,12 +2,17 @@
 
 from __future__ import annotations
 
+import os
+
 from aiogram.types import (
     KeyboardButton,
     ReplyKeyboardMarkup,
     ReplyKeyboardRemove,
+    WebAppInfo,
 )
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
+
+MINI_APP_URL = os.environ.get("MINI_APP_URL", "https://shale-relax.vercel.app")
 
 
 def main_menu() -> ReplyKeyboardMarkup:
@@ -24,6 +29,12 @@ def main_menu() -> ReplyKeyboardMarkup:
     builder.row(
         KeyboardButton(text="🏠 Наши домики"),
         KeyboardButton(text="📅 Забронировать"),
+    )
+    builder.row(
+        KeyboardButton(
+            text="🌐 Витрина",
+            web_app=WebAppInfo(url=MINI_APP_URL),
+        )
     )
     return builder.as_markup(resize_keyboard=True)
 

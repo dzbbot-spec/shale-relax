@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+:root {
+  --color-green: #1a3a2a;
+  --color-beige: #f5f0e8;
+  --color-gold: #8B6914;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: var(--color-beige);
+  color: var(--color-green);
+  min-height: 100dvh;
+}
+
+#root {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  cursor: pointer;
+}
+
+input, textarea, select {
+  font-family: inherit;
+}
