@@ -33,7 +33,7 @@ const inputStyle: React.CSSProperties = {
   borderRadius: 10,
   border: '1.5px solid #e0e0e0',
   backgroundColor: '#ffffff',
-  fontSize: 15,
+  fontSize: 16,
   fontWeight: 300,
   color: '#111111',
   boxSizing: 'border-box',
@@ -123,18 +123,12 @@ export default function Booking({ navigate }: Props) {
 
         <div style={{ marginBottom: 14 }}>
           <label style={labelStyle}>Дата заезда</label>
-          <input type="text" placeholder="дд.мм.гггг" value={form.check_in}
-            onFocus={e => { (e.target as HTMLInputElement).type = 'date'; onFocusScroll(e) }}
-            onBlur={e => { if (!(e.target as HTMLInputElement).value) (e.target as HTMLInputElement).type = 'text' }}
-            onChange={set('check_in')} required style={inputStyle} />
+          <input type="date" value={form.check_in} onChange={set('check_in')} onFocus={onFocusScroll} required style={inputStyle} />
         </div>
 
         <div style={{ marginBottom: 14 }}>
           <label style={labelStyle}>Дата выезда</label>
-          <input type="text" placeholder="дд.мм.гггг" value={form.check_out}
-            onFocus={e => { (e.target as HTMLInputElement).type = 'date'; onFocusScroll(e) }}
-            onBlur={e => { if (!(e.target as HTMLInputElement).value) (e.target as HTMLInputElement).type = 'text' }}
-            onChange={set('check_out')} required style={inputStyle} />
+          <input type="date" value={form.check_out} onChange={set('check_out')} onFocus={onFocusScroll} required style={inputStyle} />
         </div>
 
         <div style={{ marginBottom: 14 }}>
