@@ -14,7 +14,7 @@ interface FormData {
   comment: string
 }
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://shale-relax-production.up.railway.app'
+const API_URL = import.meta.env.VITE_API_URL || 'https://worker-production-8fd9.up.railway.app'
 
 const labelStyle: React.CSSProperties = {
   display: 'block',

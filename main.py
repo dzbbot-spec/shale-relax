@@ -27,11 +27,14 @@ async def health(request: web.Request) -> web.Response:
 
 
 OWNER_CHAT_ID = "1914219730"
-ALLOWED_ORIGIN = "https://shale-relax.netlify.app"
+ALLOWED_ORIGINS = {
+    "https://shale-relax.netlify.app",
+    "https://dzbbot-spec.github.io",
+}
 
 
 def _cors_headers(origin: str) -> dict:
-    allowed = ALLOWED_ORIGIN if origin == ALLOWED_ORIGIN else ALLOWED_ORIGIN
+    allowed = origin if origin in ALLOWED_ORIGINS else "https://dzbbot-spec.github.io"
     return {
         "Access-Control-Allow-Origin": allowed,
         "Access-Control-Allow-Headers": "Content-Type",
