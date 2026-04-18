@@ -20,9 +20,7 @@ def load_bookings():
     try:
         with open(BOOKINGS_FILE, "r", encoding="utf-8") as f:
             data = json.load(f)
-            if isinstance(data, list):
-                return data
-            return []
+            return data if isinstance(data, list) else []
     except (FileNotFoundError, json.JSONDecodeError):
         return []
 
@@ -45,7 +43,7 @@ def sync():
 
     content = f"""# Шале Релакс — Проект
 
-## Статус: 🟢 Бот работает на Railway
+## Статус: 🟢 Бот + Мини-апп работают
 
 Последнее обновление: **{updated_at}**
 
@@ -64,20 +62,26 @@ def sync():
 
 ## Ключевые данные
 
-- **Telegram бот:** @shale_relax_bot
-- **Instagram:** @shale_relax_elbrus
-- **Владелец:** @shale_relax_elbrus (chat_id: 1914219730)
-- **Хостинг:** Railway (триал до 11 мая 2026)
-- **GitHub:** dzbbot-spec/shale-relax
-- **Папка проекта:** ~/shale-relax
+| Параметр | Значение |
+|----------|----------|
+| Telegram бот | @shale_relax_bot |
+| Instagram | @shale_relax_elbrus |
+| Владелец chat_id | 1914219730 |
+| GitHub | github.com/dzbbot-spec/shale-relax (публичный) |
+| Railway (бот + API) | worker-production-8fd9.up.railway.app |
+| Мини-апп (GitHub Pages) | dzbbot-spec.github.io/shale-relax |
+| Cloudinary | dfbhw1rfx |
+| Папка проекта | ~/shale-relax |
 
 ---
 
 ## Сервисы
 
-| Сервис | Статус | Сумма |
-|--------|--------|-------|
-| Railway | ✅ Активен (триал) | ~500 руб/мес |
+| Сервис | Статус | Стоимость |
+|--------|--------|-----------|
+| Railway | ✅ Активен (триал до ~11 мая 2026) | ~500 руб/мес после |
+| GitHub Pages | ✅ Активен | бесплатно |
+| Cloudinary | ✅ 24 фото загружены | бесплатно |
 | Telegram Bot | ✅ Активен | бесплатно |
 | OpenAI API | ⚠️ Нет баланса | пополнить $5 |
 | Kling AI | ⚠️ Нет баланса | пополнить |
@@ -87,29 +91,57 @@ def sync():
 
 ## Следующие шаги
 
-- [ ] Пополнить OpenAI ($5)
+- [ ] Протестировать форму бронирования в Telegram на iPhone
+- [ ] Оплатить Railway до ~11 мая 2026
+- [ ] Пополнить OpenAI API ($5)
 - [ ] Пополнить Kling AI
-- [ ] Оплатить Railway до 11 мая
-- [ ] Добавить MANAGER_CHAT_ID в .env
-- [ ] Протестировать конвейер фото → видео
-- [ ] Подключить Smmbox (второй этап)
-- [ ] Первый пост в Instagram (второй этап)
+- [ ] Добавить MANAGER_CHAT_ID в Railway env
+- [ ] Подключить Smmbox после оплаты тарифа
 
 ---
 
 ## Архитектура
 
-- **main.py** — запуск бота
-- **bot/handlers.py** — бронирование + FAQ
-- **pipeline/kling.py** — генерация видео
-- **pipeline/gpt.py** — генерация подписей
-- **scheduler.py** — автозапуск пн-вс 10:00–12:00 МСК
+### Бот + API (Railway)
+- **main.py** — бот + aiohttp HTTP-сервер + APScheduler
+- **bot/handlers.py** — FSM бронирование + FAQ + приём фото
+- **bot/keyboard.py** — меню + кнопка мини-аппа
+- **POST /api/booking** — приём заявок из мини-аппа → Telegram владельцу
+
+### Мини-апп (React + Vite → GitHub Pages)
+- 4 страницы: Главная, Галерея, О домиках, Заявка
+- Навигация iOS-стиль (белая панель + blur)
+- Слайдер со свайпом, без автопрокрутки
+- Форма отправляет на Railway API
+- Фото из Cloudinary (q_auto,f_auto,w_800)
+- Автодеплой: GitHub Actions при пуше в main
+
+### ИИ-конвейер (код готов, ключи не пополнены)
+- **pipeline/kling.py** — Kling AI: фото → видео
+- **pipeline/gpt.py** — OpenAI GPT: атмосферная подпись
+- **pipeline/smmbox.py** — Smmbox: публикация в Instagram
+- Расписание: пн-вс 10:00, 11:00, 12:00 МСК
+
+---
+
+## Решённые проблемы
+
+| Проблема | Решение |
+|----------|---------|
+| Railway 404 | Procfile worker: → web: |
+| GitHub Pages не деплоился | Репо приватное → публичное |
+| iOS автозум при вводе | fontSize 16px + maximum-scale=1 |
+| Поля дат обрезались | Убран grid, type="date" напрямую |
+| Неверный Railway URL | shale-relax-production → worker-production-8fd9 |
+| CORS блокировал запросы | github.io добавлен в ALLOWED_ORIGINS |
 """
 
     with open(OBSIDIAN_FILE, "w", encoding="utf-8") as f:
         f.write(content)
 
-    print(f"✅ Obsidian обновлён: {updated_at} | Заявок: {total_bookings} | Фото: {photos_count} | Видео: {videos_count}")
+    print(f"✅ Obsidian обновлён: {updated_at}")
+    print(f"   Заявок: {total_bookings} | Последняя: {last_date}")
+    print(f"   Фото в очереди: {photos_count} | Видео готово: {videos_count}")
 
 
 if __name__ == "__main__":
