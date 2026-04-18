@@ -1,95 +1,167 @@
-import PhotoSlider from '../components/PhotoSlider'
+import { useState, useEffect } from 'react'
 import type { Page } from '../App'
+import { HERO_PHOTOS } from '../config/photos'
 
 interface Props {
   navigate: (p: Page) => void
 }
 
 export default function Home({ navigate }: Props) {
+  const [current, setCurrent] = useState(0)
+
+  useEffect(() => {
+    const t = setInterval(() => setCurrent(c => (c + 1) % HERO_PHOTOS.length), 4500)
+    return () => clearInterval(t)
+  }, [])
+
   return (
-    <div className="flex flex-col" style={{ minHeight: '100dvh' }}>
-      {/* Hero с полноэкранным слайдшоу */}
-      <div className="relative flex-1" style={{ minHeight: '100dvh' }}>
-        <PhotoSlider />
+    <div style={{ minHeight: '100dvh', backgroundColor: '#ffffff' }}>
+      {/* Шапка */}
+      <div style={{ padding: '20px 24px 12px' }}>
+        <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: 2, color: '#999999', textTransform: 'uppercase', marginBottom: 12 }}>
+          Приэльбрусье · КБР
+        </div>
+        <h1 style={{ margin: 0, fontSize: 32, fontWeight: 300, lineHeight: 1.15, color: '#111111', letterSpacing: '-0.5px' }}>
+          Шале Релакс
+        </h1>
+        <p style={{ margin: '4px 0 0', fontSize: 16, fontWeight: 300, color: '#666666' }}>
+          у подножия Эльбруса
+        </p>
+      </div>
 
-        {/* Тёмный оверлей снизу */}
+      {/* Карточка с фото */}
+      <div style={{ padding: '0 16px', marginTop: 8 }}>
         <div
-          className="absolute inset-0"
           style={{
-            background: 'linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(26,58,42,0.75) 80%)',
-            pointerEvents: 'none',
+            borderRadius: 20,
+            overflow: 'hidden',
+            position: 'relative',
+            height: 420,
+            backgroundColor: '#f0f0f0',
+            boxShadow: '0 2px 20px rgba(0,0,0,0.1)',
           }}
-        />
+        >
+          {HERO_PHOTOS.map((src, i) => (
+            <img
+              key={src}
+              src={src}
+              alt=""
+              style={{
+                position: 'absolute',
+                inset: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                opacity: i === current ? 1 : 0,
+                transition: 'opacity 0.8s ease',
+              }}
+            />
+          ))}
 
-        {/* Контент поверх фото */}
-        <div className="absolute inset-0 flex flex-col justify-end p-6 pb-24">
-          <div className="text-white">
-            <h1
-              className="font-bold mb-1"
-              style={{ fontSize: 32, letterSpacing: '-0.5px', lineHeight: 1.1 }}
-            >
-              Шале Релакс
-            </h1>
-            <p className="mb-4 opacity-90" style={{ fontSize: 16 }}>
-              Домики у подножия Эльбруса
-            </p>
-
-            {/* Бейджи */}
-            <div className="flex flex-wrap gap-2 mb-6">
-              {['⛰ 1800 м', '🚠 5 мин до подъёмников', '🏠 2 домика'].map(b => (
-                <span
-                  key={b}
-                  className="px-3 py-1 rounded-full text-sm font-medium"
-                  style={{ backgroundColor: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(8px)' }}
-                >
-                  {b}
-                </span>
-              ))}
+          {/* Плашка с ценой */}
+          <div
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              padding: '32px 20px 20px',
+              background: 'linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%)',
+              display: 'flex',
+              alignItems: 'flex-end',
+              justifyContent: 'space-between',
+            }}
+          >
+            <div>
+              <div style={{ color: 'rgba(255,255,255,0.75)', fontSize: 12, fontWeight: 400, marginBottom: 2 }}>
+                от
+              </div>
+              <div style={{ color: '#ffffff', fontSize: 26, fontWeight: 500, letterSpacing: '-0.5px' }}>
+                15 000 ₽
+              </div>
+              <div style={{ color: 'rgba(255,255,255,0.75)', fontSize: 12 }}>
+                за сутки
+              </div>
             </div>
-
-            {/* Кнопки */}
-            <div className="flex gap-3">
-              <button
-                onClick={() => navigate('chalet')}
-                className="flex-1 py-3 rounded-xl font-semibold text-center transition-opacity active:opacity-80"
-                style={{ backgroundColor: 'white', color: 'var(--color-green)', fontSize: 15 }}
-              >
-                Подробнее
-              </button>
-              <button
-                onClick={() => navigate('booking')}
-                className="flex-1 py-3 rounded-xl font-semibold text-center transition-opacity active:opacity-80"
-                style={{ backgroundColor: 'var(--color-gold)', color: 'white', fontSize: 15 }}
-              >
-                Забронировать
-              </button>
+            <div style={{ display: 'flex', gap: 6 }}>
+              {HERO_PHOTOS.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setCurrent(i)}
+                  style={{
+                    width: i === current ? 20 : 6,
+                    height: 6,
+                    borderRadius: 3,
+                    backgroundColor: i === current ? '#ffffff' : 'rgba(255,255,255,0.4)',
+                    transition: 'all 0.3s ease',
+                  }}
+                />
+              ))}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Нижний блок — преимущества */}
-      <div className="p-5 pb-24" style={{ backgroundColor: 'var(--color-beige)' }}>
-        <h2 className="font-semibold mb-4" style={{ color: 'var(--color-green)', fontSize: 18 }}>
-          Почему выбирают нас
-        </h2>
-        <div className="grid grid-cols-2 gap-3">
-          {[
-            { icon: '🌄', text: 'Вид на Эльбрус из окна' },
-            { icon: '🛖', text: 'Уютные тёплые домики' },
-            { icon: '🎿', text: 'Рядом Эльбрус и Чегет' },
-            { icon: '🤫', text: 'Тихий конец посёлка' },
-          ].map(({ icon, text }) => (
-            <div
-              key={text}
-              className="p-3 rounded-xl flex items-center gap-3"
-              style={{ backgroundColor: 'white' }}
-            >
-              <span style={{ fontSize: 24 }}>{icon}</span>
-              <span style={{ fontSize: 13, color: 'var(--color-green)' }}>{text}</span>
-            </div>
-          ))}
-        </div>
+      {/* Теги */}
+      <div style={{ padding: '16px 16px 8px', display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+        {['1800 м н.у.м.', '2 домика', '5 мин до подъёмника', '2 спальни'].map(tag => (
+          <span
+            key={tag}
+            style={{
+              padding: '6px 14px',
+              borderRadius: 50,
+              border: '1px solid #e0e0e0',
+              fontSize: 12,
+              color: '#444444',
+              fontWeight: 400,
+            }}
+          >
+            {tag}
+          </span>
+        ))}
+      </div>
+
+      {/* Кнопки */}
+      <div style={{ padding: '12px 16px 24px', display: 'flex', gap: 10 }}>
+        <button
+          onClick={() => navigate('chalet')}
+          style={{
+            flex: 1,
+            padding: '14px 0',
+            borderRadius: 50,
+            border: '1.5px solid #111111',
+            backgroundColor: 'transparent',
+            color: '#111111',
+            fontSize: 14,
+            fontWeight: 500,
+            letterSpacing: 0.3,
+          }}
+        >
+          Подробнее
+        </button>
+        <button
+          onClick={() => navigate('booking')}
+          style={{
+            flex: 1,
+            padding: '14px 0',
+            borderRadius: 50,
+            backgroundColor: '#111111',
+            color: '#ffffff',
+            fontSize: 14,
+            fontWeight: 500,
+            letterSpacing: 0.3,
+          }}
+        >
+          Забронировать
+        </button>
+      </div>
+
+      {/* Блок описания */}
+      <div style={{ margin: '0 16px 24px', padding: '20px', borderRadius: 16, backgroundColor: '#f5f5f5' }}>
+        <p style={{ margin: 0, fontSize: 14, fontWeight: 300, color: '#444444', lineHeight: 1.7 }}>
+          Два уютных шале у подножия Эльбруса. 5 минут пешком до подъёмников.
+          Тишина, горный воздух и вид на двуглавую вершину прямо из окна.
+        </p>
       </div>
     </div>
   )

@@ -1,100 +1,131 @@
-import Gallery from '../components/Gallery'
-import NavBar from '../components/NavBar'
 import type { Page } from '../App'
+import { INSIDE_PHOTOS } from '../config/photos'
 
 interface Props {
   navigate: (p: Page) => void
 }
 
 const FEATURES = [
-  { icon: '🛏', text: '2 спальни' },
-  { icon: '👥', text: 'до 6 гостей' },
-  { icon: '🍳', text: 'Кухня с посудой' },
-  { icon: '🌡', text: 'Тёплый пол' },
-  { icon: '📺', text: 'Телевизор' },
-  { icon: '📶', text: 'Wi-Fi' },
-  { icon: '🔥', text: 'Мангал' },
-  { icon: '🚗', text: 'Парковка' },
+  '2 спальни',
+  'до 6 гостей',
+  'Кухня',
+  'Тёплый пол',
+  'Телевизор',
+  'Wi-Fi',
+  'Мангал',
+  'Парковка',
 ]
 
 export default function Chalet({ navigate }: Props) {
   return (
-    <div style={{ minHeight: '100dvh', backgroundColor: 'var(--color-beige)' }}>
+    <div style={{ minHeight: '100dvh', backgroundColor: '#ffffff' }}>
       {/* Шапка */}
-      <div className="p-5 pt-4 pb-2">
-        <h1 className="font-bold" style={{ color: 'var(--color-green)', fontSize: 26 }}>
-          Наши домики
+      <div style={{ padding: '20px 24px 8px' }}>
+        <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: 2, color: '#999999', textTransform: 'uppercase', marginBottom: 8 }}>
+          пос. Эльбрус, КБР
+        </div>
+        <h1 style={{ margin: 0, fontSize: 28, fontWeight: 300, color: '#111111', letterSpacing: '-0.5px' }}>
+          Шале Релакс
         </h1>
-        <p className="mt-1" style={{ color: '#555', fontSize: 14 }}>
-          2 одинаковых уютных домика у Эльбруса
-        </p>
       </div>
 
-      {/* Галерея */}
-      <Gallery />
+      {/* Цена */}
+      <div style={{ padding: '12px 24px 16px', display: 'flex', alignItems: 'baseline', gap: 6 }}>
+        <span style={{ fontSize: 32, fontWeight: 500, color: '#111111', letterSpacing: '-1px' }}>
+          15 000 ₽
+        </span>
+        <span style={{ fontSize: 14, color: '#999999', fontWeight: 300 }}>
+          / сутки
+        </span>
+      </div>
 
-      {/* Описание */}
-      <div className="p-5">
-        <div
-          className="p-4 rounded-2xl mb-4"
-          style={{ backgroundColor: 'var(--color-green)', color: 'white' }}
-        >
-          <div className="flex justify-between items-center">
-            <div>
-              <div className="text-sm opacity-70">Стоимость</div>
-              <div className="font-bold" style={{ fontSize: 28 }}>
-                15 000 ₽
-                <span className="text-sm font-normal opacity-70 ml-1">/ сутки</span>
-              </div>
-            </div>
-            <div className="text-right">
-              <div className="text-sm opacity-70">Расположение</div>
-              <div className="text-sm">📍 п. Эльбрус · 1800 м</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Удобства */}
-        <h2 className="font-semibold mb-3" style={{ color: 'var(--color-green)', fontSize: 17 }}>
-          Что включено
-        </h2>
-        <div className="grid grid-cols-2 gap-2 mb-5">
-          {FEATURES.map(({ icon, text }) => (
+      {/* Характеристики 2x4 */}
+      <div style={{ padding: '0 16px 20px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+          {FEATURES.map(f => (
             <div
-              key={text}
-              className="flex items-center gap-3 p-3 rounded-xl"
-              style={{ backgroundColor: 'white' }}
+              key={f}
+              style={{
+                padding: '14px 16px',
+                borderRadius: 16,
+                backgroundColor: '#f5f5f5',
+                fontSize: 13,
+                fontWeight: 400,
+                color: '#111111',
+              }}
             >
-              <span style={{ fontSize: 20 }}>{icon}</span>
-              <span style={{ fontSize: 14, color: 'var(--color-green)' }}>{text}</span>
+              {f}
             </div>
           ))}
         </div>
-
-        {/* Дополнительно */}
-        <div
-          className="p-4 rounded-xl mb-5"
-          style={{ backgroundColor: 'rgba(26,58,42,0.08)' }}
-        >
-          <p style={{ fontSize: 13, color: '#444', lineHeight: 1.5 }}>
-            🚠 5 минут пешком до подъёмников Эльбруса и Чегета<br />
-            🏔 Вид на двуглавую вершину прямо из окна<br />
-            🌲 Тихий конец посёлка — тишина и горный воздух<br />
-            🔑 Самозаезд, встреча по договорённости
-          </p>
-        </div>
-
-        <button
-          onClick={() => navigate('booking')}
-          className="w-full py-4 rounded-2xl font-semibold text-white text-base transition-opacity active:opacity-80"
-          style={{ backgroundColor: 'var(--color-green)' }}
-        >
-          Забронировать — 15 000 ₽/сутки
-        </button>
       </div>
 
-      <div style={{ height: 80 }} />
-      <NavBar current="chalet" navigate={navigate} />
+      {/* Галерея внутри — горизонтальный скролл */}
+      <div style={{ paddingBottom: 12 }}>
+        <div style={{ padding: '0 24px 12px', fontSize: 13, fontWeight: 500, color: '#999999', letterSpacing: 1, textTransform: 'uppercase' }}>
+          Интерьер
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            gap: 10,
+            overflowX: 'auto',
+            padding: '0 16px',
+            scrollSnapType: 'x mandatory',
+            scrollbarWidth: 'none',
+          }}
+        >
+          {INSIDE_PHOTOS.map(src => (
+            <div
+              key={src}
+              style={{
+                flex: '0 0 220px',
+                height: 160,
+                borderRadius: 14,
+                overflow: 'hidden',
+                backgroundColor: '#f0f0f0',
+                scrollSnapAlign: 'start',
+              }}
+            >
+              <img
+                src={src}
+                alt=""
+                loading="lazy"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+              />
+            </div>
+          ))}
+          <div style={{ flex: '0 0 16px' }} />
+        </div>
+      </div>
+
+      {/* Описание */}
+      <div style={{ margin: '8px 16px 20px', padding: '18px 20px', borderRadius: 16, backgroundColor: '#f5f5f5' }}>
+        <p style={{ margin: 0, fontSize: 13, fontWeight: 300, color: '#444444', lineHeight: 1.7 }}>
+          5 минут пешком до подъёмников Эльбруса и Чегета.
+          Вид на двуглавую вершину из окна. Тихий конец посёлка.
+          Самозаезд, встреча по договорённости.
+        </p>
+      </div>
+
+      {/* Кнопка */}
+      <div style={{ padding: '0 16px 24px' }}>
+        <button
+          onClick={() => navigate('booking')}
+          style={{
+            width: '100%',
+            padding: '16px 0',
+            borderRadius: 50,
+            backgroundColor: '#111111',
+            color: '#ffffff',
+            fontSize: 15,
+            fontWeight: 500,
+            letterSpacing: 0.3,
+          }}
+        >
+          Забронировать
+        </button>
+      </div>
     </div>
   )
 }

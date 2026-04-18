@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import Home from './pages/Home'
 import Chalet from './pages/Chalet'
-import Location from './pages/Location'
+import GalleryPage from './pages/GalleryPage'
 import Booking from './pages/Booking'
+import NavBar from './components/NavBar'
 
-export type Page = 'home' | 'chalet' | 'location' | 'booking'
+export type Page = 'home' | 'gallery' | 'chalet' | 'booking'
 
 export default function App() {
   const [page, setPage] = useState<Page>('home')
@@ -15,11 +16,12 @@ export default function App() {
   }
 
   return (
-    <div style={{ backgroundColor: 'var(--color-beige)', minHeight: '100dvh' }}>
+    <div style={{ backgroundColor: '#ffffff', minHeight: '100dvh', paddingBottom: 80 }}>
       {page === 'home' && <Home navigate={navigate} />}
+      {page === 'gallery' && <GalleryPage navigate={navigate} />}
       {page === 'chalet' && <Chalet navigate={navigate} />}
-      {page === 'location' && <Location navigate={navigate} />}
       {page === 'booking' && <Booking navigate={navigate} />}
+      <NavBar current={page} navigate={navigate} />
     </div>
   )
 }
