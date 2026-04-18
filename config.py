@@ -5,7 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import List
 
-from pydantic import Field
+from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -29,13 +29,13 @@ class Settings(BaseSettings):
     openai_api_key: str = Field(default="")
     openai_model: str = Field(default="gpt-4o-mini")
 
-    # --- Kling AI (официальный API, JWT-аутентификация) ---
+    # --- Kling AI ---
     kling_api_url: str = Field(default="https://api.klingai.com/v1/images/kolors-virtual-try-on")
     kling_access_key: str = Field(default="")
     kling_secret_key: str = Field(default="")
     kling_model: str = Field(default="kling-v1-5")
-    kling_poll_interval: int = Field(default=15, description="Интервал опроса готовности видео (сек)")
-    kling_max_poll_attempts: int = Field(default=40, description="Максимум попыток опроса (40*15=10 мин)")
+    kling_poll_interval: int = Field(default=15)
+    kling_max_poll_attempts: int = Field(default=40)
 
     # --- Smmbox ---
     smmbox_api_url: str = Field(default="https://smmbox.com/api/v2/posts")
@@ -59,8 +59,16 @@ class Settings(BaseSettings):
     # --- Режим отладки ---
     debug: bool = Field(default=False)
 
+    @field_validator("telegram_bot_token", "openai_api_key", "kling_access_key", "kling_secret_key", mode="before")
+    @classmethod
+    def strip_whitespace(cls, v: str) -> str:
+        """Убирает пробелы и переносы строк из токенов."""
+        if isinstance(v, str):
+            return v.strip()
+        return v
 
-# Расписание публикаций по дням недели (рубрики из ТЗ 5.4)
+
+# Расписание публикаций по дням недели
 PUBLICATION_SCHEDULE: List[dict] = [
     {"day": "mon", "hour": 10, "rubric": "Природа и виды", "hashtags": "#Эльбрус #Приэльбрусье #горы"},
     {"day": "tue", "hour": 10, "rubric": "Жизнь домиков", "hashtags": "#ШалеРелакс #уютныйдом #горскийотдых"},
@@ -71,7 +79,7 @@ PUBLICATION_SCHEDULE: List[dict] = [
     {"day": "sun", "hour": 12, "rubric": "Итоги недели / UGC", "hashtags": "#Кабардино #КБР #природа"},
 ]
 
-# Слова, запрещённые в подписях (требование ФЗ-72 и концепции аккаунта)
+# Слова, запрещённые в подписях (требование ФЗ-72)
 BANNED_WORDS = ("аренда", "бронирование", "цена", "стоимость", "заказать", "купить")
 
 # Промпт-файлы
