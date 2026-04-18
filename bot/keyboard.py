@@ -21,7 +21,10 @@ def main_menu() -> ReplyKeyboardMarkup:
         KeyboardButton(text="🏍 Эндуро-маршруты"),
         KeyboardButton(text="🚗 Трансфер"),
     )
-    builder.row(KeyboardButton(text="📅 Забронировать"))
+    builder.row(
+        KeyboardButton(text="🏠 Наши домики"),
+        KeyboardButton(text="📅 Забронировать"),
+    )
     return builder.as_markup(resize_keyboard=True)
 
 
