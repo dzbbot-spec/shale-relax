@@ -1,4 +1,5 @@
 # Telegram-бот
+aiohttp==3.9.5
 aiogram==3.13.0
 
 # HTTP-клиент (асинхронный)

@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import asyncio
+import os
+from aiohttp import web
 
 from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.memory import MemoryStorage
@@ -16,6 +18,19 @@ from pipeline.pipeline import run_pipeline
 from utils.logger import setup_logger
 
 
+async def health(request: web.Request) -> web.Response:
+    return web.Response(text="ok")
+
+
+async def start_health_server() -> None:
+    port = int(os.environ.get("PORT", 8080))
+    app = web.Application()
+    app.router.add_get("/", health)
+    runner = web.AppRunner(app)
+    await runner.setup()
+    await web.TCPSite(runner, "0.0.0.0", port).start()
+
+
 async def main() -> None:
     settings = get_settings()
     logger = setup_logger("bot", settings.log_level, settings.logs_path)
@@ -23,6 +38,9 @@ async def main() -> None:
     if not settings.telegram_bot_token:
         logger.critical("TELEGRAM_BOT_TOKEN не задан в .env. Бот не запущен.")
         return
+
+    # ── Health-check сервер для Railway ──────────────────────────────────────
+    await start_health_server()
 
     # ── Планировщик конвейера ─────────────────────────────────────────────
     tz = timezone(settings.timezone)
