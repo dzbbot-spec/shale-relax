@@ -1,0 +1,18 @@
+[Unit]
+Description=Шале Релакс — Telegram бот + ИИ-конвейер
+After=network.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=shale
+WorkingDirectory=/opt/shale-relax
+ExecStart=/opt/shale-relax/.venv/bin/python main.py
+Restart=always
+RestartSec=10
+StandardOutput=append:/opt/shale-relax/logs/bot.log
+StandardError=append:/opt/shale-relax/logs/bot_stderr.log
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target

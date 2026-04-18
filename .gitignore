@@ -1,0 +1,46 @@
+# Переменные окружения — НИКОГДА не коммитить!
+.env
+*.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Виртуальные окружения
+venv/
+.venv/
+env/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Логи (кроме .gitkeep)
+logs/*.log
+
+# Данные и медиа
+data/
+downloads/
+ready_to_post/
+фото/
+*.mp4
+*.jpg
+*.jpeg
+*.png
+
+# Runtime
+bot.pid
+
+# Jupyter
+.ipynb_checkpoints/

@@ -1,0 +1,65 @@
+{
+  "description": "Библиотека промптов для Kling AI (Umnik.ai). Каждый промпт — атмосферная сцена для генерации видео.",
+  "prompts": [
+    {
+      "id": "morning_elbrus",
+      "rubric": "Природа и виды",
+      "prompt": "Cinematic shot of Mount Elbrus at sunrise, golden light on snow-capped peaks, soft mist in the valley below, slow upward camera tilt, photorealistic, 4K"
+    },
+    {
+      "id": "cozy_chalet_evening",
+      "rubric": "Жизнь домиков",
+      "prompt": "Cozy wooden chalet in Caucasus mountains at dusk, warm light glowing through windows, snow gently falling, smoke from chimney, peaceful atmosphere, cinematic"
+    },
+    {
+      "id": "valley_aerial",
+      "rubric": "Природа и виды",
+      "prompt": "Aerial drone shot gliding over Baksan valley, Caucasus mountains on both sides, winding river below, autumn forest colors, golden hour light, smooth movement"
+    },
+    {
+      "id": "alpine_lake",
+      "rubric": "Природа и виды",
+      "prompt": "Crystal clear alpine lake reflecting mountain peaks, misty morning atmosphere, gentle ripples on the surface, slow zoom in, Prielbrusye, cinematic nature"
+    },
+    {
+      "id": "ski_slope_chegel",
+      "rubric": "Активности",
+      "prompt": "Skier descending Cheget slope, powder snow, dramatic Caucasus mountain backdrop, slow motion, cinematic winter sports, bright sunny day"
+    },
+    {
+      "id": "enduro_trail",
+      "rubric": "Эндуро",
+      "prompt": "Enduro motorcycle riding on mountain trail, Caucasus landscape, dust trail behind bike, epic scenery, action shot, cinematic movement"
+    },
+    {
+      "id": "starry_night",
+      "rubric": "Атмосфера вечера",
+      "prompt": "Milky Way over Caucasus mountains, wooden chalet silhouette in foreground, starry sky time-lapse, mountain peaks, magical night atmosphere"
+    },
+    {
+      "id": "interior_warmth",
+      "rubric": "Жизнь домиков",
+      "prompt": "Warm wooden interior of mountain chalet, fireplace crackling, soft candlelight, cozy blanket on sofa, mountain view through window, hygge atmosphere"
+    },
+    {
+      "id": "waterfall_summer",
+      "rubric": "Природа и виды",
+      "prompt": "Majestic waterfall in Caucasus mountain gorge, lush green vegetation, mist spray, slow motion water flow, summer light, cinematic nature film"
+    },
+    {
+      "id": "autumn_forest",
+      "rubric": "Природа и виды",
+      "prompt": "Autumn forest in Prielbrusye, golden and red leaves, mountain peaks above treeline, warm afternoon light, gentle camera movement through trees"
+    },
+    {
+      "id": "cable_car_azau",
+      "rubric": "Активности",
+      "prompt": "Cable car ascending Elbrus from Azau meadow, mountains below, clouds at eye level, smooth upward movement, epic scale of Caucasus landscape"
+    },
+    {
+      "id": "thermal_springs",
+      "rubric": "Партнёры и инфра",
+      "prompt": "Steaming thermal spring in mountain gorge, misty hot water, rocky landscape, dramatic atmosphere, cinematic slow motion water flow"
+    }
+  ]
+}
