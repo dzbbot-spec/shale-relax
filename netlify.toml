@@ -1,7 +1,7 @@
 [build]
   base    = "mini-app"
   command = "npm run build"
-  publish = "mini-app/dist"
+  publish = "dist"
 
 [[redirects]]
   from   = "/*"
