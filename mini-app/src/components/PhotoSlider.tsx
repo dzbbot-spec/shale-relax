@@ -1,19 +1,5 @@
 import { useState, useEffect } from 'react'
-
-const CLOUD = import.meta.env.VITE_CLOUDINARY_CLOUD || 'dfbhw1rfx'
-
-const HERO_PHOTOS = [
-  'shale-relax/20250712_201908',
-  'shale-relax/20250712_201919',
-  'shale-relax/20250712_201931',
-  'shale-relax/20250712_201943',
-  'shale-relax/20250101_182454',
-  'shale-relax/20250101_182514',
-]
-
-function cloudUrl(publicId: string, w = 800) {
-  return `https://res.cloudinary.com/${CLOUD}/image/upload/w_${w},c_fill,q_auto,f_auto/${publicId}.jpg`
-}
+import { HERO_PHOTOS, cloudUrl } from '../config/photos'
 
 interface Props {
   autoPlay?: boolean

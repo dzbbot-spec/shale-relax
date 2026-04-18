@@ -1,29 +1,7 @@
 import { useState } from 'react'
+import { GALLERY_PHOTOS, cloudUrl } from '../config/photos'
 
-const CLOUD = import.meta.env.VITE_CLOUDINARY_CLOUD || 'dfbhw1rfx'
-
-export const GALLERY_PHOTOS = [
-  'shale-relax/20250101_182454',
-  'shale-relax/20250101_182514',
-  'shale-relax/20250101_182622',
-  'shale-relax/20250101_182641',
-  'shale-relax/20250101_182706',
-  'shale-relax/20250101_183012',
-  'shale-relax/20250101_183133',
-  'shale-relax/20250121_142412',
-  'shale-relax/20250121_142438',
-  'shale-relax/20250121_142453',
-  'shale-relax/20250121_142615',
-  'shale-relax/20250121_142755',
-  'shale-relax/20250712_201908',
-  'shale-relax/20250712_201919',
-  'shale-relax/20250712_201931',
-  'shale-relax/20250712_201943',
-]
-
-function cloudUrl(publicId: string, w = 400) {
-  return `https://res.cloudinary.com/${CLOUD}/image/upload/w_${w},c_fill,q_auto,f_auto/${publicId}.jpg`
-}
+export { GALLERY_PHOTOS }
 
 interface Props {
   photos?: string[]
