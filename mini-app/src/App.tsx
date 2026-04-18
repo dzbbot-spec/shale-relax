@@ -16,7 +16,7 @@ export default function App() {
   }
 
   return (
-    <div style={{ backgroundColor: '#ffffff', minHeight: '100dvh', paddingBottom: 80 }}>
+    <div style={{ backgroundColor: '#ffffff', minHeight: '100dvh', paddingBottom: 'calc(65px + env(safe-area-inset-bottom, 0px))' }}>
       {page === 'home' && <Home navigate={navigate} />}
       {page === 'gallery' && <GalleryPage navigate={navigate} />}
       {page === 'chalet' && <Chalet navigate={navigate} />}
