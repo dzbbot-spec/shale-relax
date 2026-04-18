@@ -36,6 +36,12 @@ export default function Booking({ navigate }: Props) {
     comment: '',
   })
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
+  const [pressed, setPressed] = useState<'minus' | 'plus' | null>(null)
+
+  const pressBtn = (btn: 'minus' | 'plus') => {
+    setPressed(btn)
+    setTimeout(() => setPressed(null), 150)
+  }
 
   const set = (key: keyof FormData) => (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -174,17 +180,20 @@ export default function Booking({ navigate }: Props) {
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
             <button
               type="button"
+              onPointerDown={() => pressBtn('minus')}
               onClick={() => setForm(f => ({ ...f, guests: Math.max(1, f.guests - 1) }))}
               style={{
                 width: 44,
                 height: 44,
                 borderRadius: 50,
-                border: '1.5px solid #e8e8e8',
+                border: '1.5px solid #e0e0e0',
                 fontSize: 20,
-                color: '#111111',
+                color: pressed === 'minus' ? '#ffffff' : '#111111',
+                backgroundColor: pressed === 'minus' ? '#111111' : '#ffffff',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                transition: 'background-color 0.1s, color 0.1s',
               }}
             >
               −
@@ -194,17 +203,20 @@ export default function Booking({ navigate }: Props) {
             </span>
             <button
               type="button"
+              onPointerDown={() => pressBtn('plus')}
               onClick={() => setForm(f => ({ ...f, guests: Math.min(6, f.guests + 1) }))}
               style={{
                 width: 44,
                 height: 44,
                 borderRadius: 50,
-                border: '1.5px solid #e8e8e8',
+                border: '1.5px solid #e0e0e0',
                 fontSize: 20,
-                color: '#111111',
+                color: pressed === 'plus' ? '#ffffff' : '#111111',
+                backgroundColor: pressed === 'plus' ? '#111111' : '#ffffff',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                transition: 'background-color 0.1s, color 0.1s',
               }}
             >
               +
