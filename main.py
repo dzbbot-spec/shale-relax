@@ -5,6 +5,7 @@ from __future__ import annotations
 import asyncio
 
 from aiogram import Bot, Dispatcher
+from aiogram.fsm.storage.memory import MemoryStorage
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 from pytz import timezone
@@ -12,7 +13,6 @@ from pytz import timezone
 from bot.handlers import router
 from config import get_settings
 from pipeline.pipeline import run_pipeline
-from utils.fsm_storage import JsonFileStorage
 from utils.logger import setup_logger
 
 
@@ -38,7 +38,7 @@ async def main() -> None:
 
     # ── Telegram-бот ──────────────────────────────────────────────────────
     bot = Bot(token=settings.telegram_bot_token)
-    dp = Dispatcher(storage=JsonFileStorage())
+    dp = Dispatcher(storage=MemoryStorage())
     dp.include_router(router)
 
     logger.info("Бот @shale_relax_bot запущен. Ожидание сообщений...")
