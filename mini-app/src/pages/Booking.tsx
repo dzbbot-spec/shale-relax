@@ -107,8 +107,6 @@ export default function Booking({ navigate }: Props) {
     )
   }
 
-  const today = new Date().toISOString().split('T')[0]
-
   return (
     <div style={{ minHeight: '100dvh', backgroundColor: '#ffffff', paddingBottom: 'calc(env(safe-area-inset-bottom, 16px) + 70px)', overflowX: 'hidden' }}>
       <div style={{ padding: '16px 16px 8px' }}>
