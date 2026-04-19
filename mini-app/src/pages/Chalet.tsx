@@ -15,6 +15,14 @@ const FEATURES = [
   { label: 'Парковка', desc: 'Бесплатно' },
 ]
 
+const FAQ_ITEMS = [
+  { q: 'Есть ли залог?', a: 'Да, залог при заселении. Возвращается после выезда.' },
+  { q: 'Можно с животными?', a: 'Да, по согласованию с владельцем.' },
+  { q: 'Ранний заезд / поздний выезд?', a: 'Возможен при наличии свободных дат, обсуждается индивидуально.' },
+  { q: 'Можно курить?', a: 'Некурящий объект. Курение только на улице.' },
+  { q: 'Есть ли парковка?', a: 'Да, бесплатная парковка на территории.' },
+]
+
 const INFO_BLOCKS = [
   {
     title: 'Расположение',
@@ -74,6 +82,18 @@ export default function Chalet({ navigate }: Props) {
             <p style={{ margin: 0, fontSize: 13, fontWeight: 300, color: '#444444', lineHeight: 1.7 }}>
               {block.text}
             </p>
+          </div>
+        ))}
+      </div>
+
+      <div style={{ padding: '20px 16px 0' }}>
+        <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: 1.5, color: '#999999', textTransform: 'uppercase', marginBottom: 10 }}>
+          Вопросы и ответы
+        </div>
+        {FAQ_ITEMS.map((item, i) => (
+          <div key={i} style={{ marginBottom: 8, padding: '14px 16px', borderRadius: 10, backgroundColor: '#f5f5f5' }}>
+            <div style={{ fontSize: 13, fontWeight: 500, color: '#111111', marginBottom: 4 }}>{item.q}</div>
+            <div style={{ fontSize: 13, fontWeight: 300, color: '#555555', lineHeight: 1.6 }}>{item.a}</div>
           </div>
         ))}
       </div>
