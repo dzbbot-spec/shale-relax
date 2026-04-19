@@ -1,7 +1,61 @@
+import { useEffect, useRef } from 'react'
+import L from 'leaflet'
+import 'leaflet/dist/leaflet.css'
 import type { Page } from '../App'
 
 interface Props {
   navigate: (p: Page) => void
+}
+
+const LAT = 43.251272
+const LNG = 42.636834
+
+function MapWidget() {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const mapRef = useRef<L.Map | null>(null)
+
+  useEffect(() => {
+    if (!containerRef.current || mapRef.current) return
+
+    const map = L.map(containerRef.current, {
+      center: [LAT, LNG],
+      zoom: 15,
+      zoomControl: false,
+      scrollWheelZoom: false,
+      dragging: false,
+      attributionControl: false,
+    })
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://carto.com/">CartoDB</a>',
+      subdomains: 'abcd',
+      maxZoom: 19,
+    }).addTo(map)
+
+    const icon = L.divIcon({
+      className: '',
+      html: '<div style="width:14px;height:14px;background:#111111;border-radius:50%;border:2px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.3)"></div>',
+      iconSize: [14, 14],
+      iconAnchor: [7, 7],
+    })
+
+    L.marker([LAT, LNG], { icon })
+      .addTo(map)
+      .bindPopup('Шале Релакс')
+
+    mapRef.current = map
+
+    return () => {
+      map.remove()
+      mapRef.current = null
+    }
+  }, [])
+
+  return (
+    <div style={{ borderRadius: 12, overflow: 'hidden', boxShadow: '0 2px 12px rgba(0,0,0,0.08)' }}>
+      <div ref={containerRef} style={{ height: 220, width: '100%' }} />
+    </div>
+  )
 }
 
 const PhoneIcon = () => (
@@ -129,17 +183,29 @@ export default function Contacts({ navigate: _navigate }: Props) {
           </div>
         </div>
 
-        <div style={{ borderRadius: 12, overflow: 'hidden', boxShadow: '0 2px 12px rgba(0,0,0,0.08)' }}>
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2385.0!2d42.6836!3d43.2328!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDPCsDEzJzU4LjEiTiA0MsKwNDAnNjAuOSJF!5e0!3m2!1sru!2sru!4v1234567890"
-            width="100%"
-            height="200"
-            style={{ border: 0, display: 'block' }}
-            allowFullScreen
-            loading="lazy"
-            title="Шале Релакс на карте"
-          />
-        </div>
+        <MapWidget />
+
+        <a
+          href={`https://maps.google.com/?q=${LAT},${LNG}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: 'block',
+            marginTop: 10,
+            padding: '12px 0',
+            borderRadius: 12,
+            border: '1.5px solid #111111',
+            backgroundColor: 'transparent',
+            color: '#111111',
+            fontSize: 14,
+            fontWeight: 500,
+            textAlign: 'center',
+            textDecoration: 'none',
+            letterSpacing: 0.3,
+          }}
+        >
+          Открыть в картах
+        </a>
       </div>
     </div>
   )
