@@ -45,7 +45,13 @@ ready_to_post/
 !mini-app/public/**/*.png
 
 # Runtime
-bot.pid
+*.pid
+*.log
+
+# Временные скрипты (md viewer, etc.)
+*.command
+.md_viewer.*
+_claude/
 
 # Jupyter
 .ipynb_checkpoints/
