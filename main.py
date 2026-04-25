@@ -29,7 +29,6 @@ async def health(request: web.Request) -> web.Response:
 OWNER_CHAT_ID = "1914219730"
 ALLOWED_ORIGINS = {
     "https://dzbbot-spec.github.io",
-    "https://dzbbot-spec.github.io",
 }
 
 
