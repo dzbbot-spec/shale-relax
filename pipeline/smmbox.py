@@ -17,7 +17,7 @@ _settings = get_settings()
 _TG_API = "https://api.telegram.org/bot{token}/{method}"
 
 
-class DeliveryClient:
+class NotificationClient:
     """Скачивает готовое видео, сохраняет в ./ready_to_post/ и отправляет владельцу в Telegram."""
 
     def __init__(self, logger: logging.Logger) -> None:

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef } from 'react'
 import Home from './pages/Home'
 import Chalet from './pages/Chalet'
 import GalleryPage from './pages/GalleryPage'
@@ -21,8 +21,6 @@ export default function App() {
     setFadeKey(k => k + 1)
     window.scrollTo(0, 0)
   }
-
-  useEffect(() => {}, [fadeKey])
 
   return (
     <div style={{ backgroundColor: '#ffffff', minHeight: '100dvh', paddingBottom: 'calc(65px + env(safe-area-inset-bottom, 0px))' }}>

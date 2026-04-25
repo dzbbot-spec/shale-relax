@@ -10,7 +10,7 @@ from pathlib import Path
 from config import KLING_PROMPTS_FILE, get_settings
 from pipeline.gpt import GPTClient
 from pipeline.kling import KlingClient
-from pipeline.smmbox import DeliveryClient
+from pipeline.smmbox import NotificationClient
 from utils.logger import setup_logger
 
 _settings = get_settings()
@@ -53,7 +53,7 @@ async def run_pipeline() -> None:
 
     kling = KlingClient(logger=_logger)
     gpt = GPTClient(logger=_logger)
-    delivery = DeliveryClient(logger=_logger)
+    delivery = NotificationClient(logger=_logger)
     kling_prompts = _load_kling_prompts()
 
     for photo_path in photo_files:

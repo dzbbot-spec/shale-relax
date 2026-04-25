@@ -43,7 +43,7 @@ def async_retry(max_retries: int = 3, delay: float = 5.0, logger: logging.Logger
 
 
 def format_booking(payload: dict) -> str:
-    """Форматирует заявку в читаемое текстовое сообщение."""
+    """Форматирует заявку из Telegram-бота (FSM). Для заявок из мини-аппа — booking_webhook в main.py."""
     return (
         "📋 Новая заявка на бронирование\n"
         "─────────────────────────\n"
