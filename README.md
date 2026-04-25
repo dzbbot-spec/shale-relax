@@ -1,141 +1,100 @@
-# Шале Релакс — Автоматизация
+# Шале Релакс
 
-Автономная система привлечения клиентов для аренды домиков у подножия Эльбруса.
+Система привлечения клиентов для аренды 2 домиков у подножия Эльбруса (пос. Эльбрус, КБР).
 
-- **Instagram:** @shale_relax_elbrus
-- **Telegram-бот:** @shale_relax_bot
+- **Мини-апп:** [dzbbot-spec.github.io/shale-relax](https://dzbbot-spec.github.io/shale-relax)
+- **Telegram-бот:** [@shale_relax_bot](https://t.me/shale_relax_bot)
+- **Instagram:** [@shale_relax_elbrus](https://instagram.com/shale_relax_elbrus)
 
-## Что делает система
+## Архитектура
 
-| Компонент | Роль |
-|-----------|------|
-| `main.py` | Telegram-бот: приём заявок, FAQ, пересылка владельцу |
-| `pipeline/pipeline.py` | ИИ-конвейер: фото → видео (Kling) → подпись (GPT) → публикация (Smmbox) |
-| `scheduler.py` | Автозапуск конвейера по расписанию (пн-вс, 10:00-12:00 МСК) |
+| Компонент | Описание | Деплой |
+|-----------|----------|--------|
+| `main.py` | Telegram-бот: FAQ, FSM-бронирование, приём фото от управляющего | Railway |
+| `bot/` | Хэндлеры aiogram 3.x, клавиатуры | — |
+| `pipeline/` | ИИ-конвейер: фото → видео (Kling) → подпись (GPT) → Instagram (Smmbox) | вручную |
+| `mini-app/` | React-витрина: 6 экранов, форма заявки | GitHub Pages |
+
+## Мини-апп (React + Vite + TypeScript)
+
+6 экранов, деплой через GitHub Actions на GitHub Pages:
+
+```
+mini-app/src/pages/
+├── Home.tsx        # Слайдер, теги, описание
+├── GalleryPage.tsx # Галерея exterior/interior, лайтбокс со свайпом
+├── Chalet.tsx      # Удобства, инфоблоки, FAQ
+├── Around.tsx      # Вокруг нас: курорты, природа, активности
+├── Booking.tsx     # Форма заявки → POST /api/booking
+└── Contacts.tsx    # Телефон, Telegram, Instagram, карта Leaflet
+```
+
+Фото хранятся в Cloudinary CDN (`shale-relax/exterior/` и `shale-relax/interior/`).
 
 ## Установка
 
 ```bash
-# 1. Клонируйте репозиторий и перейдите в папку
-cd shale-relax
-
-# 2. Создайте виртуальное окружение
-python3 -m venv .venv
-source .venv/bin/activate  # macOS/Linux
-# .venv\Scripts\activate   # Windows
-
-# 3. Установите зависимости
+# Python-зависимости (бот + API)
+python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
+cp .env.example .env  # заполнить ключи
 
-# 4. Создайте .env из шаблона
-cp .env.example .env
-# Откройте .env и заполните все поля
+# Мини-апп (локально)
+cd mini-app && npm install && npm run dev
 ```
 
 ## Конфигурация `.env`
 
-| Переменная | Обязательна | Описание |
-|------------|-------------|----------|
-| `TELEGRAM_BOT_TOKEN` | ✅ | Токен от @BotFather |
-| `OWNER_CHAT_ID` | ✅ | Chat ID для пересылки заявок |
-| `OPENAI_API_KEY` | ✅ | Ключ OpenAI для подписей |
-| `UMNIK_KLING_API_KEY` | Для конвейера | Ключ Kling AI (umnik.ai) |
-| `SMMBOX_API_KEY` | Для конвейера | Ключ Smmbox для публикации |
-| `SMMBOX_ACCOUNT_ID` | Для конвейера | ID Instagram-аккаунта в Smmbox |
-| `MANAGER_CHAT_ID` | Рекомендуется | Chat ID управляющего |
+| Переменная | Описание |
+|------------|----------|
+| `TELEGRAM_BOT_TOKEN` | Токен от @BotFather |
+| `OWNER_CHAT_ID` | Chat ID для пересылки заявок (1914219730) |
+| `OPENAI_API_KEY` | OpenAI для подписей к видео |
+| `KLING_ACCESS_KEY` / `KLING_SECRET_KEY` | Kling AI для генерации видео |
+| `SMMBOX_API_KEY` / `SMMBOX_ACCOUNT_ID` | Smmbox для публикации в Instagram |
+| `MANAGER_CHAT_ID` | Chat ID управляющего (опционально) |
 
 ## Запуск
 
-### Telegram-бот
-
 ```bash
+# Бот + HTTP API (Railway запускает автоматически)
 python main.py
-```
 
-### Разовый запуск конвейера вручную
-
-```bash
+# ИИ-конвейер вручную
 python -m pipeline.pipeline
 ```
-
-### Планировщик (автозапуск конвейера по расписанию)
-
-```bash
-python scheduler.py
-```
-
-### Совместный запуск бота и планировщика
-
-Рекомендуется запускать как два отдельных процесса (например, через `screen` или `systemd` на VPS):
-
-```bash
-# Терминал 1
-python main.py
-
-# Терминал 2
-python scheduler.py
-```
-
-## Как работает конвейер
-
-1. Управляющий отправляет фото боту в Telegram
-2. Фото сохраняются в `data/photos/`
-3. По расписанию (или вручную) запускается `pipeline.py`:
-   - Kling AI генерирует видео из фото
-   - GPT пишет атмосферную подпись (без запрещённых слов)
-   - Smmbox публикует рилс в Instagram
-4. Обработанное фото перемещается в `data/photos/processed/`
 
 ## Структура проекта
 
 ```
 shale-relax/
-├── main.py                  # Запуск бота
-├── scheduler.py             # Планировщик
-├── config.py                # Централизованная конфигурация
+├── main.py              # Точка входа: бот + aiohttp API
+├── config.py            # Централизованная конфигурация
+├── Procfile             # Railway: web: python main.py
 ├── bot/
-│   ├── handlers.py          # Обработчики aiogram 3.x
-│   └── keyboard.py          # Клавиатуры
+│   ├── handlers.py      # Обработчики aiogram 3.x
+│   └── keyboard.py      # Клавиатуры
 ├── pipeline/
-│   ├── pipeline.py          # Оркестратор конвейера
-│   ├── kling.py             # Клиент Kling AI
-│   ├── gpt.py               # Клиент OpenAI
-│   └── smmbox.py            # Клиент Smmbox
+│   ├── pipeline.py      # Оркестратор конвейера
+│   ├── kling.py         # Клиент Kling AI
+│   ├── gpt.py           # Клиент OpenAI
+│   └── smmbox.py        # Клиент Smmbox
 ├── utils/
-│   ├── logger.py            # Логирование
-│   └── helpers.py           # Retry и хелперы
-├── prompts/
-│   ├── system_prompt_gpt.txt  # Системный промпт GPT
-│   └── kling_prompts.json     # Библиотека промптов Kling
-├── data/
-│   ├── photos/              # Очередь входящих фото
-│   └── bookings.json        # Архив заявок
-├── logs/                    # Файлы логов
-├── .env                     # Реальные ключи (в git не попадает)
-├── .env.example             # Шаблон конфигурации
+│   ├── logger.py        # Логирование
+│   └── helpers.py       # Retry и хелперы
+├── prompts/             # Промпты для GPT и Kling
+├── mini-app/            # React-мини-апп
+├── data/                # bookings.json, очередь фото
+├── .env.example         # Шаблон конфигурации
 └── requirements.txt
 ```
 
+## Деплой
+
+- **Бот + API:** Railway (`worker-production-8fd9.up.railway.app`), автодеплой при пуше в `main`
+- **Мини-апп:** GitHub Pages, GitHub Actions деплоит при изменениях в `mini-app/**`
+
 ## Логи
 
-Все логи пишутся в консоль и в файлы:
 - `logs/bot.log` — события бота
-- `logs/pipeline.log` — конвейер
-- `logs/scheduler.log` — планировщик
-
-## Деплой на VPS
-
-```bash
-# Установка зависимостей на сервере (Ubuntu/Debian)
-sudo apt update && sudo apt install python3 python3-venv python3-pip -y
-
-# Клонирование и настройка
-git clone <repo> shale-relax && cd shale-relax
-python3 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env && nano .env
-
-# Запуск через screen (для продакшена рекомендуется systemd)
-screen -S shale-bot -dm python main.py
-screen -S shale-scheduler -dm python scheduler.py
-```
+- `logs/pipeline.log` — ИИ-конвейер

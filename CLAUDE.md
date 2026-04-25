@@ -17,7 +17,7 @@
 | Railway (бот + API) | worker-production-8fd9.up.railway.app |
 | Мини-апп | dzbbot-spec.github.io/shale-relax |
 | GitHub | github.com/dzbbot-spec/shale-relax (публичный) |
-| Cloudinary | dfbhw1rfx, фото: q_auto,f_auto,w_800 |
+| Cloudinary | dfbhw1rfx, вход через GitHub (dzbbot-spec), фото: q_auto,f_auto,w_800 |
 | OWNER_CHAT_ID | 1914219730 |
 | Telegram Bot | @shale_relax_bot |
 | Телефон | +7 928 910-76-01 |
@@ -25,7 +25,7 @@
 | Координаты домиков | 43.251272, 42.636834 |
 | GitHub PAT | в Bitwarden (repo + workflow scope) |
 
-## Текущий статус (19 апреля 2026)
+## Текущий статус (25 апреля 2026)
 
 - ✅ Бот работает на Railway
 - ✅ Мини-апп на GitHub Pages (6 экранов: Главная, Галерея, О домиках, Вокруг нас, Заявка, Контакты)
@@ -92,6 +92,7 @@ mini-app/src/pages/
 - [ ] Добавить отзывы гостей
 - [ ] Протестировать ИИ-конвейер
 - [ ] Подключить Smmbox
+- [ ] Разложить фото по папкам в Cloudinary (сейчас лежат в корне)
 
 ## Решённые проблемы
 
