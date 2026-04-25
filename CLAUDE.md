@@ -20,83 +20,87 @@
 | Cloudinary | dfbhw1rfx, фото: q_auto,f_auto,w_800 |
 | OWNER_CHAT_ID | 1914219730 |
 | Telegram Bot | @shale_relax_bot |
+| Телефон | +7 928 910-76-01 |
+| Instagram | @shale_relax_elbrus |
+| Координаты домиков | 43.251272, 42.636834 |
 | GitHub PAT | в Bitwarden (repo + workflow scope) |
 
-## Текущий статус (18 апреля 2026)
+## Текущий статус (19 апреля 2026)
 
 - ✅ Бот работает на Railway
-- ✅ Мини-апп задеплоен на GitHub Pages, автодеплой через Actions
-- ✅ `POST /api/booking` принимает заявки из мини-аппа и пересылает владельцу
-- ✅ 24 фото загружены в Cloudinary (9 exterior + 14 interior)
-- ✅ iOS-фиксы: fontSize 16px, maximum-scale=1, type="date" напрямую
+- ✅ Мини-апп на GitHub Pages (6 экранов: Главная, Галерея, О домиках, Вокруг нас, Заявка, Контакты)
+- ✅ Экран «Контакты» — телефон, Telegram, Instagram, адрес, карта
+- ✅ Экран «Вокруг нас» — активности и маршруты
+- ✅ Лайтбокс в галерее — свайп и стрелки
+- ✅ FAQ в разделе «О домиках»
+- ✅ Карта Leaflet с координатами домиков (43.251272, 42.636834)
+- ✅ 24 фото в Cloudinary (9 exterior + 14 interior)
+- ✅ iOS-фиксы: fontSize 16px, maximum-scale=1
 - ⚠️ OpenAI API — нет баланса (нужно $5)
 - ⚠️ Kling AI — нет баланса
 - ❌ Smmbox — тариф не оплачен (1700 руб/мес)
+- ❌ MANAGER_CHAT_ID — не задан
 - ⚠️ Railway — триал до ~11 мая 2026
+
+## Объект
+
+- 2 одинаковых домика, пос. Эльбрус, КБР
+- 2 спальни, до 6 гостей, кухня, тёплый пол, TV, Wi-Fi, мангал, парковка
+- Цена: 15 000 руб/сутки
+- Координаты: 43.251272, 42.636834
+- Телефон: +7 928 910-76-01
 
 ## Стек
 
-- **Бот:** Python 3, aiogram 3.x, aiohttp, APScheduler, pydantic-settings
-- **Мини-апп:** React 19, Vite, TypeScript, Tailwind CSS v4
+- **Бот:** Python 3, aiogram 3.x, aiohttp, APScheduler
+- **Мини-апп:** React 19, Vite, TypeScript, Tailwind CSS v4, Leaflet.js
 - **Деплой:** Railway (бот), GitHub Pages (мини-апп), GitHub Actions (CI/CD)
 - **Фото:** Cloudinary CDN
 - **ИИ:** Kling AI (видео), OpenAI gpt-4o-mini (подписи), Smmbox (постинг)
 
-## Структура репозитория
+## Структура мини-аппа (6 экранов)
 
 ```
-main.py                    # Точка входа: бот + aiohttp + APScheduler
-bot/handlers.py            # FSM бронирование + FAQ + приём фото
-bot/keyboard.py            # Меню + WebApp кнопка (MINI_APP_URL из env)
-pipeline/                  # kling.py, gpt.py, smmbox.py, pipeline.py
-utils/obsidian_sync.py     # Синхронизация статистики с Obsidian
-mini-app/src/pages/        # Home, GalleryPage, Chalet, Booking
-mini-app/src/components/   # NavBar (iOS-стиль)
-mini-app/src/config/       # photos.ts (Cloudinary URLs)
-.github/workflows/         # deploy-mini-app.yml
-Procfile                   # web: python main.py
-TZ_v3.0.md                 # Полное техническое задание
-PROGRESS.md                # Чеклист задач
-_claude/                   # Заметки сессий Claude Code
+mini-app/src/pages/
+├── Home.tsx        # Слайдер (свайп), теги, атмосферное описание
+├── GalleryPage.tsx # Галерея exterior/interior + лайтбокс со свайпом
+├── Chalet.tsx      # Удобства + инфоблоки + FAQ
+├── Around.tsx      # Вокруг нас — активности и маршруты
+├── Booking.tsx     # Форма заявки → POST /api/booking
+└── Contacts.tsx    # Телефон, Telegram, Instagram, адрес, карта Leaflet
 ```
 
 ## Правила работы
 
-### Код
-- Все commit-сообщения на английском, по конвенции: `feat:`, `fix:`, `docs:`, `chore:`
-- После изменений в mini-app — пушить, GitHub Actions задеплоит сам
-- После изменений в Python-коде — Railway передеплоится автоматически при пуше
-- Не коммитить `.env` — он в `.gitignore`
-
-### Мини-апп (мобильный, iOS)
-- `font-size: 16px` на всех `input` и `textarea` — iOS не зумит
-- `maximum-scale=1` в viewport — запрет ручного зума
-- `type="date"` напрямую, без JS-трюков с onFocus
+- Commit-сообщения на английском: `feat:`, `fix:`, `docs:`, `chore:`
+- После изменений в mini-app — пушить, Actions задеплоит сам
+- `font-size: 16px` на всех input — iOS не зумит
+- `maximum-scale=1` в viewport
 - `safe-area-inset-bottom` в paddingBottom страниц и NavBar
-- Cloudinary URL с `q_auto,f_auto,w_800` для оптимизации
+- Cloudinary URL с `q_auto,f_auto,w_800`
+- Railway домен: `worker-production-8fd9.up.railway.app`
+- Procfile: `web: python main.py`
+- CORS разрешён для `dzbbot-spec.github.io`
 
-### Railway
-- Реальный домен: `worker-production-8fd9.up.railway.app` (не shale-relax-production!)
-- Procfile: `web: python main.py` (не worker — иначе нет публичного порта)
-- CORS разрешён для `dzbbot-spec.github.io` и `shale-relax.netlify.app`
+## Нерешённые задачи (следующие шаги)
 
-### GitHub Pages
-- Репо должен быть **публичным** (иначе Pages через Actions не работает)
-- Vite base: `/shale-relax/` — задаётся через `GITHUB_ACTIONS=true` env
-- Workflow запускается только при изменениях в `mini-app/**`
+- [ ] Оплатить Railway до ~11 мая
+- [ ] Пополнить OpenAI ($5) и Kling AI
+- [ ] Узнать MANAGER_CHAT_ID управляющего
+- [ ] Снять фото домиков №1 и №2 отдельно
+- [ ] Придумать названия домиков
+- [ ] Добавить отзывы гостей
+- [ ] Протестировать ИИ-конвейер
+- [ ] Подключить Smmbox
 
-### Память сессий
-- Заметки о каждой сессии писать в `_claude/YYYY-MM-DD.md`
-- Запускать `utils/obsidian_sync.py` для обновления Obsidian-дашборда
-- Полное ТЗ: `TZ_v3.0.md`, прогресс: `PROGRESS.md`
+## Решённые проблемы
 
-## Решённые проблемы (не наступать снова)
-
-| Проблема | Причина | Решение |
-|----------|---------|---------|
-| Railway 404 | `Procfile` имел `worker:` | Заменить на `web:` |
-| GitHub Pages 404 | Репо был приватным | Сделать публичным |
-| Билд падает на CI | Неиспользуемая переменная TypeScript | Убрать `const today` |
-| iOS зумит при вводе | `font-size < 16px` | Установить 16px везде |
-| Поля дат обрезаются | grid без `min-width:0` | Убрать grid, поля вертикально |
-| Неверный Railway URL | Разные домены в коде и реальности | worker-production-8fd9 |
+| Проблема | Решение |
+|----------|---------|
+| Railway 404 | Procfile `worker:` → `web:` |
+| GitHub Pages 404 | Репо публичный |
+| iOS зумит при вводе | font-size 16px + maximum-scale=1 |
+| Поля дат обрезались | Поля вертикально, без grid |
+| Фото не грузились | .gitignore исправлен |
+| Netlify лимит | Переехали на GitHub Pages |
+| CORS ошибки | github.io добавлен в ALLOWED_ORIGINS |

@@ -25,6 +25,7 @@ ENV/
 *.swp
 *.swo
 .DS_Store
+.obsidian/
 
 # Логи (кроме .gitkeep)
 logs/*.log
@@ -52,6 +53,8 @@ ready_to_post/
 *.command
 .md_viewer.*
 _claude/
+.claude/
+mini-app/media/
 
 # Jupyter
 .ipynb_checkpoints/
