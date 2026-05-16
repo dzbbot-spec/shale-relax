@@ -16,8 +16,5 @@ python-dotenv==1.0.1
 pydantic-settings==2.5.2
 pydantic>=2.4.1,<2.9
 
-# Работа с файлами async
-aiofiles==23.2.1
-
 # Часовые пояса
 pytz==2024.2

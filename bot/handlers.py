@@ -12,7 +12,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.types import Message, PhotoSize
 
-from bot.keyboard import cancel_menu, main_menu, remove_keyboard
+from bot.keyboard import cancel_menu, main_menu
 from config import get_settings
 from utils.helpers import format_booking
 from utils.logger import setup_logger
