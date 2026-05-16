@@ -27,7 +27,7 @@ def main_menu() -> ReplyKeyboardMarkup:
         KeyboardButton(text="🚗 Трансфер"),
     )
     builder.row(
-        KeyboardButton(text="🏠 Наши домики"),
+        KeyboardButton(text="🏠 Наши домики", web_app=WebAppInfo(url=MINI_APP_URL)),
         KeyboardButton(text="📅 Забронировать"),
     )
     builder.row(
