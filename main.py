@@ -4,9 +4,10 @@ from __future__ import annotations
 
 import asyncio
 import json
+import logging
 import os
 from datetime import datetime
-from aiohttp import web
+from aiohttp import web, ClientSession, ClientError
 
 from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.memory import MemoryStorage
@@ -90,6 +91,23 @@ async def booking_preflight(request: web.Request) -> web.Response:
     return web.Response(status=204, headers=headers)
 
 
+async def keep_alive() -> None:
+    render_url = os.environ.get("RENDER_URL", "").rstrip("/")
+    if not render_url:
+        return
+    url = f"{render_url}/health"
+    _log = logging.getLogger("keep_alive")
+    _log.info("keep_alive запущен, пинг каждые 10 минут: %s", url)
+    while True:
+        await asyncio.sleep(600)
+        try:
+            async with ClientSession() as session:
+                async with session.get(url, timeout=10) as resp:
+                    _log.debug("keep_alive ping → %s", resp.status)
+        except ClientError as exc:
+            _log.warning("keep_alive ping не удался: %s", exc)
+
+
 async def start_health_server() -> None:
     port = int(os.environ.get("PORT", 8080))
     app = web.Application()
@@ -110,8 +128,9 @@ async def main() -> None:
         logger.critical("TELEGRAM_BOT_TOKEN не задан в .env. Бот не запущен.")
         return
 
-    # ── Health-check сервер для Railway ──────────────────────────────────────
+    # ── Health-check сервер ───────────────────────────────────────────────────
     await start_health_server()
+    asyncio.create_task(keep_alive())
 
     # ── Планировщик конвейера ─────────────────────────────────────────────
     tz = timezone(settings.timezone)
