@@ -94,6 +94,7 @@ async def start_health_server() -> None:
     port = int(os.environ.get("PORT", 8080))
     app = web.Application()
     app.router.add_get("/", health)
+    app.router.add_get("/health", health)
     app.router.add_post("/api/booking", booking_webhook)
     app.router.add_route("OPTIONS", "/api/booking", booking_preflight)
     runner = web.AppRunner(app)

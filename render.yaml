@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: shale-relax-bot
+    runtime: python
+    region: frankfurt
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python main.py
+    healthCheckPath: /health
+    envVars:
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: OWNER_CHAT_ID
+        value: "1914219730"
+      - key: OWNER_USERNAME
+        value: "@shale_relax_elbrus"
+      - key: MANAGER_CHAT_ID
+        sync: false
+      - key: MANAGER_USERNAME
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_MODEL
+        value: gpt-4o-mini
+      - key: RUNWAY_API_KEY
+        sync: false
+      - key: SMMBOX_API_KEY
+        sync: false
+      - key: SMMBOX_ACCOUNT_ID
+        sync: false
+      - key: LOG_LEVEL
+        value: INFO
+      - key: TIMEZONE
+        value: Europe/Moscow
+      - key: PYTHON_VERSION
+        value: "3.11.0"

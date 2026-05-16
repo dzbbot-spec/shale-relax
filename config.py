@@ -29,13 +29,11 @@ class Settings(BaseSettings):
     openai_api_key: str = Field(default="")
     openai_model: str = Field(default="gpt-4o-mini")
 
-    # --- Kling AI ---
-    kling_api_url: str = Field(default="https://api.klingai.com/v1/images/kolors-virtual-try-on")
-    kling_access_key: str = Field(default="")
-    kling_secret_key: str = Field(default="")
-    kling_model: str = Field(default="kling-v1-5")
-    kling_poll_interval: int = Field(default=15)
-    kling_max_poll_attempts: int = Field(default=40)
+    # --- Runway AI ---
+    runway_api_key: str = Field(default="")
+    runway_model: str = Field(default="gen4_turbo")
+    runway_poll_interval: int = Field(default=15)
+    runway_max_poll_attempts: int = Field(default=40)
 
     # --- Smmbox ---
     smmbox_api_url: str = Field(default="https://smmbox.com/api/v2/posts")
@@ -59,7 +57,7 @@ class Settings(BaseSettings):
     # --- Режим отладки ---
     debug: bool = Field(default=False)
 
-    @field_validator("telegram_bot_token", "openai_api_key", "kling_access_key", "kling_secret_key", mode="before")
+    @field_validator("telegram_bot_token", "openai_api_key", "runway_api_key", mode="before")
     @classmethod
     def strip_whitespace(cls, v: str) -> str:
         """Убирает пробелы и переносы строк из токенов."""
@@ -85,7 +83,7 @@ BANNED_WORDS = ("аренда", "бронирование", "цена", "сто�
 # Промпт-файлы
 PROMPTS_DIR = Path("prompts")
 GPT_SYSTEM_PROMPT_FILE = PROMPTS_DIR / "system_prompt_gpt.txt"
-KLING_PROMPTS_FILE = PROMPTS_DIR / "kling_prompts.json"
+RUNWAY_PROMPTS_FILE = PROMPTS_DIR / "kling_prompts.json"
 
 
 def get_settings() -> Settings:

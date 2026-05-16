@@ -7,9 +7,9 @@ import json
 import random
 from pathlib import Path
 
-from config import KLING_PROMPTS_FILE, get_settings
+from config import RUNWAY_PROMPTS_FILE, get_settings
 from pipeline.gpt import GPTClient
-from pipeline.kling import KlingClient
+from pipeline.runway import RunwayClient
 from pipeline.smmbox import NotificationClient
 from utils.logger import setup_logger
 
@@ -17,11 +17,11 @@ _settings = get_settings()
 _logger = setup_logger("pipeline", _settings.log_level, _settings.logs_path)
 
 
-def _load_kling_prompts() -> list[str]:
-    """Загружает библиотеку промптов Kling из JSON-файла."""
-    if KLING_PROMPTS_FILE.exists():
+def _load_runway_prompts() -> list[str]:
+    """Загружает библиотеку промптов Runway из JSON-файла."""
+    if RUNWAY_PROMPTS_FILE.exists():
         try:
-            data = json.loads(KLING_PROMPTS_FILE.read_text(encoding="utf-8"))
+            data = json.loads(RUNWAY_PROMPTS_FILE.read_text(encoding="utf-8"))
             prompts = data if isinstance(data, list) else data.get("prompts", [])
             if prompts:
                 return [p if isinstance(p, str) else p.get("prompt", "") for p in prompts]
@@ -51,18 +51,18 @@ async def run_pipeline() -> None:
 
     _logger.info("Найдено %d фото в очереди. Начинаем конвейер.", len(photo_files))
 
-    kling = KlingClient(logger=_logger)
+    runway = RunwayClient(logger=_logger)
     gpt = GPTClient(logger=_logger)
     delivery = NotificationClient(logger=_logger)
-    kling_prompts = _load_kling_prompts()
+    runway_prompts = _load_runway_prompts()
 
     for photo_path in photo_files:
         _logger.info("── Обработка: %s ──", photo_path.name)
         try:
-            # Шаг 1: генерация видео через Kling AI
-            prompt = random.choice(kling_prompts)
-            _logger.info("Промпт Kling: %s", prompt)
-            video_url = await kling.generate_video(photo_path, prompt)
+            # Шаг 1: генерация видео через Runway AI
+            prompt = random.choice(runway_prompts)
+            _logger.info("Промпт Runway: %s", prompt)
+            video_url = await runway.generate_video(photo_path, prompt)
 
             # Шаг 2: генерация подписи через GPT
             caption = await gpt.generate_caption(photo_path.name)
