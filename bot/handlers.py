@@ -160,11 +160,6 @@ async def faq_transfer(message: Message) -> None:
     await message.answer(FAQ["трансфер"], reply_markup=main_menu(), parse_mode="Markdown")
 
 
-@router.message(F.text == "🏠 Наши домики")
-async def faq_chalet(message: Message) -> None:
-    await message.answer(FAQ["домик"], reply_markup=main_menu(), parse_mode="Markdown")
-
-
 @router.message(F.text == "📅 Забронировать")
 async def booking_start(message: Message, state: FSMContext) -> None:
     await state.set_state(BookingStates.name)
