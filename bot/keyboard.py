@@ -30,12 +30,7 @@ def main_menu() -> ReplyKeyboardMarkup:
         KeyboardButton(text="🏠 Наши домики", web_app=WebAppInfo(url=MINI_APP_URL)),
         KeyboardButton(text="📅 Забронировать"),
     )
-    builder.row(
-        KeyboardButton(
-            text="🌐 Витрина",
-            web_app=WebAppInfo(url=MINI_APP_URL),
-        )
-    )
+
     return builder.as_markup(resize_keyboard=True)
 
 
